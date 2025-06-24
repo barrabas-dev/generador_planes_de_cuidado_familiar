@@ -19,7 +19,7 @@ serializable_dict = {
 }
 
 # Guardar o imprimir como JSON bonito
-print(json.dumps(serializable_dict, indent=4, ensure_ascii=False))
+#print(json.dumps(serializable_dict, indent=4, ensure_ascii=False))
 
 # -----------------------------------------------------------------------------------------------------------
 from excel_exporter_1 import crear_planes_cuidado

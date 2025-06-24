@@ -50,11 +50,15 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
 
         # Rellenar datos en la hoja base
         llenar_datos_en_hoja(hoja_modelo, primera_persona, hogar_info["integrantes"])
+        insertar_imagenes_familiares(hoja_modelo, primera_persona["HOGAR"], "A17")
+
 
         # Para los demás seleccionados, duplicar la hoja base
         for persona in seleccionados[1:]:
             nueva_hoja = copiar_hoja(wb, hoja_modelo, persona["NUMERO DE IDENTIFICACIÓN"])
             llenar_datos_en_hoja(nueva_hoja, persona, hogar_info["integrantes"])
+            insertar_imagenes_familiares(nueva_hoja, persona["HOGAR"], "A17")
+
 
         wb.save(hogar_path)
 
@@ -93,3 +97,43 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
         hoja[f"E{fila}"] = integrante["ESCOLARIDAD"]
         hoja[f"F{fila}"] = integrante["OCUPACION"]
         hoja[f"G{fila}"] = integrante["CONVIVE DENTRO DE LA CASA"]
+
+#------------------------------------------------------------------------------------------------------------------------
+from openpyxl.drawing.image import Image
+from PIL import Image as PILImage
+
+def insertar_imagenes_familiares(hoja, hogar_id, celda_inicio, ancho_celda_px=800):
+    """
+    Inserta dos imágenes (ecomapa y familiograma) en la hoja en la misma fila,
+    una a la izquierda y otra a la derecha, partiendo desde la celda combinada.
+
+    :param hoja: objeto worksheet
+    :param hogar_id: identificador del hogar (ej. "H0005")
+    :param celda_inicio: celda combinada donde deben ir las imágenes (ej. "B30")
+    :param ancho_celda_px: ancho total estimado en píxeles de la celda combinada
+    """
+
+    # Rutas de las imágenes
+    ruta_ecomapa = f"assets/ecomapas/{hogar_id}.jpg"
+    ruta_familiograma = f"assets/familiogramas/{hogar_id}.jpg"
+
+    # Posición de destino para las imágenes
+    col, fila = celda_inicio[0], int(celda_inicio[1:])
+
+    # Establecer altura de la fila
+    hoja.row_dimensions[fila].height = 310
+
+
+    if os.path.exists(ruta_ecomapa):
+        img_eco = Image(ruta_ecomapa)
+        img_eco.width = ancho_celda_px // 2  # mitad del ancho
+        img_eco.height = int(img_eco.width * 1)  # proporción
+        hoja.add_image(img_eco, f"{col}{fila}")
+    
+    if os.path.exists(ruta_familiograma):
+        # Calcular una columna desplazada a la derecha
+        col_derecha = chr(ord(col) + 3)  # Ajusta este valor según el tamaño de celda
+        img_fam = Image(ruta_familiograma)
+        img_fam.width = ancho_celda_px // 2
+        img_fam.height = int(img_fam.width * 1)
+        hoja.add_image(img_fam, f"{col_derecha}{fila}")
