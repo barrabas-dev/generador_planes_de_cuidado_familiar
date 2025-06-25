@@ -3,6 +3,8 @@ import shutil
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from datetime import datetime
+from situaciones_encontradas import llenar_situaciones_en_hoja
+from situaciones_encontradas import llenar_desarrollo_por_etapa
 
 
 def copiar_hoja(wb, hoja_origen, nuevo_nombre):
@@ -98,6 +100,14 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
         hoja[f"F{fila}"] = integrante["OCUPACION"]
         hoja[f"G{fila}"] = integrante["CONVIVE DENTRO DE LA CASA"]
 
+    #----celdas de situaciones encontradas---
+    llenar_situaciones_en_hoja(hoja, persona, celda="B23")
+    
+    #----celda de desarrollo por etapas-------
+    llenar_desarrollo_por_etapa(hoja, persona, celda="B25")
+
+
+
 #------------------------------------------------------------------------------------------------------------------------
 from openpyxl.drawing.image import Image
 from PIL import Image as PILImage
@@ -137,3 +147,4 @@ def insertar_imagenes_familiares(hoja, hogar_id, celda_inicio, ancho_celda_px=80
         img_fam.width = ancho_celda_px // 2
         img_fam.height = int(img_fam.width * 1)
         hoja.add_image(img_fam, f"{col_derecha}{fila}")
+
