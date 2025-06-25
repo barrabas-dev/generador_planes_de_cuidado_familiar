@@ -3,8 +3,9 @@ import shutil
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from datetime import datetime
-from situaciones_encontradas import llenar_situaciones_en_hoja
-from situaciones_encontradas import llenar_desarrollo_por_etapa
+from situaciones_encontradas import llenar_situaciones_en_hoja, llenar_desarrollo_por_etapa, llenar_area_afectiva_en_hoja, llenar_area_personal_en_hoja, llenar_area_social_en_hoja, llenar_area_educativa_ocupacional_en_hoja
+
+
 
 
 def copiar_hoja(wb, hoja_origen, nuevo_nombre):
@@ -105,6 +106,20 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
     
     #----celda de desarrollo por etapas-------
     llenar_desarrollo_por_etapa(hoja, persona, celda="B25")
+
+    #---celda de area personal-----------
+    llenar_area_personal_en_hoja(hoja, persona, celda="B27")
+    
+    #---celda de area afectiva-----------
+    llenar_area_afectiva_en_hoja(hoja, persona, celda="B30")
+    
+    #---celda de area social-----------
+    llenar_area_social_en_hoja(hoja, persona, celda="B28")
+
+    #---celda de area educativa/ocupacional-----------
+    llenar_area_educativa_ocupacional_en_hoja(hoja, persona, celda="B29")
+
+
 
 
 
