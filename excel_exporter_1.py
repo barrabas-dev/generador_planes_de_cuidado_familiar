@@ -3,7 +3,7 @@ import shutil
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from datetime import datetime
-from situaciones_encontradas import llenar_situaciones_en_hoja, llenar_desarrollo_por_etapa, llenar_area_afectiva_en_hoja, llenar_area_personal_en_hoja, llenar_area_social_en_hoja, llenar_area_educativa_ocupacional_en_hoja
+from situaciones_encontradas import llenar_situaciones_en_hoja, llenar_desarrollo_por_etapa, llenar_area_afectiva_en_hoja, llenar_area_personal_en_hoja, llenar_area_social_en_hoja, llenar_area_educativa_ocupacional_en_hoja, llenar_acciones_en_hoja, llenar_area_impresion_diagnostica_en_hoja, llenar_plan_intervencion_en_hoja, llenar_area_conclusion_en_hoja
 
 
 
@@ -118,6 +118,18 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
 
     #---celda de area educativa/ocupacional-----------
     llenar_area_educativa_ocupacional_en_hoja(hoja, persona, celda="B29")
+
+    #---celda de procesos de evaluacion-----------
+    llenar_acciones_en_hoja(hoja, persona, celda="A32")
+
+    #----celda de impresion diagnostica------------
+    llenar_area_impresion_diagnostica_en_hoja(hoja, persona, celda="A34")
+
+    #----celda de plan de intervencion-------------
+    llenar_plan_intervencion_en_hoja(hoja, persona, celda="A36")
+
+    #----celda de colclusiones y recomendaciones--------
+    llenar_area_conclusion_en_hoja(hoja, persona, celda="A38")
 
 
 

@@ -167,3 +167,243 @@ def llenar_area_educativa_ocupacional_en_hoja(hoja, persona, celda):
         "vejez": "En la vejez urbana, muchas personas participan en actividades educativas y comunitarias. Estas fomentan el desarrollo personal, la socialización y el sentido de pertenencia. Contribuyen al bienestar cognitivo y emocional a través del aprendizaje continuo."
     }
     llenar_area_en_hoja(hoja, persona, celda, area_educativa_ocupacional)
+
+def llenar_area_impresion_diagnostica_en_hoja(hoja, persona, celda):
+    # Diccionario con las descripciones educativa_ocupacional por etapa de vida
+    impresion_diagnostica = {
+        "primera infancia": "Valoración integral en el curso de vida en la primera infancia",
+        "infancia": "Valoración integral en el curso de vida en la infancia",
+        "adolescencia": "Valoración integral en el curso de vida en la adolescencia",
+        "juventud": "Valoración integral en el curso de vida en la juventud",
+        "adultez": "Valoración integral en el curso de vida en la adultez",
+        "vejez": "Valoración integral en el curso de vida en la vejez"
+    }
+    llenar_area_en_hoja(hoja, persona, celda, impresion_diagnostica)
+
+def llenar_area_conclusion_en_hoja(hoja, persona, celda):
+    # Diccionario con las descripciones educativa_ocupacional por etapa de vida
+    conclusiones_recomendaciones = {
+        "primera infancia": (
+            "La atención integral en la primera infancia, según la Ruta 3280, permite garantizar el crecimiento y desarrollo adecuado de niños y niñas mediante la promoción de la salud y la prevención de enfermedades. "
+            "El equipo de salud realiza intervenciones oportunas y articuladas con la familia, fortaleciendo el cuidado en el entorno hogareño y comunitario. "
+            "Se prioriza el seguimiento nutricional, el desarrollo infantil temprano y el acompañamiento psicosocial para favorecer el bienestar integral desde los primeros años de vida."
+        ),
+        "infancia": (
+            "La atención integral en la infancia, según la Ruta 3280, busca promover el desarrollo físico, emocional y social de los niños y niñas, mediante la detección temprana de riesgos y la promoción de estilos de vida saludables. "
+            "El equipo de salud implementa acciones educativas y preventivas en articulación con las familias y las instituciones educativas, fomentando el autocuidado, la alimentación saludable y la actividad física. "
+            "Se brinda apoyo psicosocial para contribuir al bienestar integral en esta etapa clave del desarrollo."
+        ),
+        "adolescencia": (
+            "La atención integral en la adolescencia, según la Ruta 3280, favorece el desarrollo autónomo y saludable de los y las adolescentes a través de la promoción de estilos de vida saludables, la prevención de riesgos y el fortalecimiento de factores protectores. "
+            "El equipo de salud brinda orientación oportuna en temas como salud sexual y reproductiva, salud mental, nutrición y convivencia. "
+            "Se fomenta el autocuidado y se promueve la participación activa del adolescente en su proyecto de vida, garantizando su bienestar integral."
+        ),
+        "juventud": (
+            "La atención integral en la juventud, según la Ruta 3280, busca fortalecer el autocuidado y la toma de decisiones responsables en temas de salud, mediante intervenciones oportunas que promuevan estilos de vida saludables y la prevención de enfermedades. "
+            "El equipo de salud ofrece acompañamiento en salud sexual y reproductiva, salud mental, nutrición y proyecto de vida, brindando espacios de orientación y apoyo psicosocial. "
+            "Se prioriza la participación activa de los jóvenes en la construcción de su bienestar físico, emocional y social."
+        ),
+        "adultez": (
+            "La atención integral en la adultez según la Ruta 3280 permite promover estilos de vida saludables y prevenir enfermedades crónicas. "
+            "El equipo de salud realiza intervenciones oportunas que fortalecen el autocuidado y mejoran la calidad de vida. "
+            "Se fomenta la detección temprana de riesgos y el apoyo psicosocial para el bienestar integral."
+        ),
+        "vejez": (
+            "La atención integral en la vejez, según la Ruta 3280, tiene como objetivo mantener la autonomía, promover el envejecimiento activo y prevenir la dependencia funcional. "
+            "El equipo de salud realiza intervenciones enfocadas en el cuidado físico, mental y social de la persona mayor, fomentando estilos de vida saludables, el control de enfermedades crónicas y el fortalecimiento de redes de apoyo. "
+            "Se garantiza un abordaje humanizado que contribuya a una mejor calidad de vida y bienestar integral en esta etapa del ciclo vital."
+        )
+    }
+    llenar_area_en_hoja(hoja, persona, celda, conclusiones_recomendaciones)
+
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def llenar_acciones_en_hoja(hoja, persona, celda):
+    """
+    Llena una celda con las acciones recomendadas según las situaciones
+    identificadas como True en la información de la persona.
+    
+    :param hoja: hoja activa (openpyxl)
+    :param persona: diccionario con datos de la persona
+    :param celda: celda donde escribir la descripción (por ejemplo "B26")
+    """
+
+    # Campos booleanos evaluados
+    BOOLEAN_COLUMNS = {
+        "CITOLOGÍA- ADN VPH",
+        "MAMOGRAFIA - ECM",
+        "TAMIZAJE CA DE COLON",
+        "TAMIZAJE CA DE PROSTATA",
+        "DESPARASITACION ANTIHELMITICA",
+        "PLANIFICACION FAMILIAR",
+        "TAMIZAJE ANEMIA Y HEMOGLOBINA",
+        "TAMIZAJE RIESGO CARDIOVASCULAR",
+        "VACUNACIÓN",
+        "VALORACIÓN ODONTOLOGÍA",
+        "CONSULTA DE CONTROL (RIAS)",
+        "TOMA DE LABORATORIOS SEGUN RIA"
+    }
+
+    # Diccionario de acciones
+    acciones_por_situacion = {
+        "CITOLOGÍA- ADN VPH": [
+            "Educación a la población sobre la importancia del tamizaje cervical.",
+            "Organización y coordinación de jornadas de citología.",
+            "Seguimiento de resultados y control periódico."
+        ],
+        "MAMOGRAFIA - ECM": [
+            "Promoción del autoexamen mamario y su correcta realización.",
+            "Educación en factores de riesgo y signos de alerta.",
+            "Seguimiento y acompañamiento en casos sospechosos."
+        ],
+        "TAMIZAJE CA DE COLON": [
+            "Información y sensibilización sobre tamizaje para cáncer de colon.",
+            "Coordinación de pruebas como sangre oculta en heces.",
+            "Remisión a consulta médica para evaluación.",
+            "Seguimiento de resultados y orientación."
+        ],
+        "TAMIZAJE CA DE PROSTATA": [
+            "Educación a hombres sobre importancia del tamizaje.",
+            "Organización de tamizajes (antígeno prostático).",
+            "Remisión a consulta urológica según resultados.",
+            "Acompañamiento en seguimiento."
+        ],
+        "DESPARASITACION ANTIHELMITICA": [
+            "Educación en medidas de higiene y prevención.",
+            "Coordinación de campañas de desparasitación.",
+            "Administración supervisada del tratamiento antiparasitario.",
+            "Seguimiento de cumplimiento y control."
+        ],
+        "PLANIFICACION FAMILIAR": [
+            "Asesoría personalizada sobre métodos de planificación familiar.",
+            "Educación en sexualidad y prevención.",
+            "Remisión a consulta especializada si es necesario.",
+            "Seguimiento del uso y adherencia."
+        ],
+        "TAMIZAJE ANEMIA Y HEMOGLOBINA": [
+            "Promoción de hábitos alimenticios saludables ricos en hierro.",
+            "Coordinación de pruebas hemoglobínicas o hematológicas.",
+            "Remisión para tratamiento y control.",
+            "Educación sobre signos de anemia."
+        ],
+        "TAMIZAJE RIESGO CARDIOVASCULAR": [
+            "Educación sobre hábitos saludables (dieta, ejercicio, control de peso).",
+            "Coordinación de medición de presión arterial, glucosa, lípidos.",
+            "Remisión para evaluación médica y seguimiento.",
+            "Acompañamiento en control de factores modificables."
+        ],
+        "VACUNACIÓN": [
+            "Verificación y actualización del esquema de vacunación.",
+            "Organización de campañas y jornadas de vacunación.",
+            "Educación sobre beneficios y mitos de vacunas.",
+            "Registro y seguimiento de vacunación."
+        ],
+        "VALORACIÓN ODONTOLOGÍA": [
+            "Promoción de higiene oral y hábitos saludables.",
+            "Coordinación de valoraciones odontológicas periódicas.",
+            "Remisión para atención odontológica según necesidad.",
+            "Educación en prevención de caries y enfermedades periodontales."
+        ],
+        "CONSULTA DE CONTROL (RIAS)": [
+            "Organización y recordatorio de consultas periódicas.",
+            "Evaluación de riesgos y promoción de salud según edad.",
+            "Educación personalizada y acompañamiento familiar.",
+            "Remisión oportuna a especialistas."
+        ],
+        "TOMA DE LABORATORIOS SEGUN RIA": [
+            "Coordinación de toma de muestras y pruebas de laboratorio.",
+            "Educación sobre importancia de exámenes preventivos.",
+            "Seguimiento de resultados y remisión médica.",
+            "Apoyo en adherencia a tratamientos si se requiere."
+        ]
+    }
+
+    acciones_texto = []
+
+    # Evaluar las situaciones presentes (True)
+    for campo in BOOLEAN_COLUMNS:
+        if persona.get(campo) is True:
+            acciones = acciones_por_situacion.get(campo)
+            if acciones:
+                acciones_texto.append(f"{campo}:\n" + "\n".join(f"  - {accion}" for accion in acciones))
+
+    # Texto final
+    texto_final = "Acciones sugeridas:\n\n" + "\n\n".join(acciones_texto) if acciones_texto else "Sin acciones sugeridas."
+
+    # Escribir el texto en la celda
+    hoja[celda] = texto_final
+
+    # Ajuste de estilo y altura
+    hoja[celda].alignment = Alignment(wrap_text=True, vertical="top")
+
+    fila = int(''.join(filter(str.isdigit, celda)))
+    num_lineas = texto_final.count("\n") + 1
+    hoja.row_dimensions[fila].height = 15 * num_lineas
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+
+def llenar_plan_intervencion_en_hoja(hoja, persona, celda):
+    """
+    Llena una celda con los planes de intervención basados en las situaciones 
+    encontradas como True en la información de la persona.
+    
+    :param hoja: hoja de cálculo activa (openpyxl)
+    :param persona: diccionario con los datos de la persona
+    :param celda: celda donde se escribirá el texto (por ejemplo "B27")
+    """
+
+    # Campos booleanos evaluados
+    BOOLEAN_COLUMNS = {
+        "CITOLOGÍA- ADN VPH",
+        "MAMOGRAFIA - ECM",
+        "TAMIZAJE CA DE COLON",
+        "TAMIZAJE CA DE PROSTATA",
+        "DESPARASITACION ANTIHELMITICA",
+        "PLANIFICACION FAMILIAR",
+        "TAMIZAJE ANEMIA Y HEMOGLOBINA",
+        "TAMIZAJE RIESGO CARDIOVASCULAR",
+        "VACUNACIÓN",
+        "VALORACIÓN ODONTOLOGÍA",
+        "CONSULTA DE CONTROL (RIAS)",
+        "TOMA DE LABORATORIOS SEGUN RIA"
+    }
+
+    # Planes de intervención
+    plan_intervencion_estandarizado = {
+        "CITOLOGÍA- ADN VPH": "Acompañamiento y educación para la prevención, detección oportuna y manejo adecuado del cáncer de cuello uterino.",
+        "MAMOGRAFIA - ECM": "Orientación y apoyo para la detección temprana, el autocuidado y el afrontamiento del cáncer de mama.",
+        "TAMIZAJE CA DE COLON": "Educación y seguimiento para la prevención, detección temprana y manejo integral del cáncer de colon.",
+        "TAMIZAJE CA DE PROSTATA": "Información y acompañamiento para la detección oportuna, control y afrontamiento del cáncer de próstata.",
+        "DESPARASITACION ANTIHELMITICA": "Prevenir y controlar las parasitosis intestinales en la población, especialmente en niños y grupos vulnerables.",
+        "PLANIFICACION FAMILIAR": "Información clara y acompañamiento para elegir un método anticonceptivo acorde a sus necesidades y proyecto de vida.",
+        "TAMIZAJE ANEMIA Y HEMOGLOBINA": "Prevenir y controlar la anemia por deficiencia de hierro en la población objeto según RIA.",
+        "TAMIZAJE RIESGO CARDIOVASCULAR": "Orientación y control periódico para prevenir, identificar y reducir los factores de riesgo cardiovascular.",
+        "VACUNACIÓN": "Completar o actualizar su esquema de vacunación para prevenir enfermedades y proteger su salud y la de la comunidad.",
+        "VALORACIÓN ODONTOLOGÍA": "Orientación y seguimiento para mantener una salud oral óptima, mediante hábitos de higiene adecuados y prevención de enfermedades bucales.",
+        "CONSULTA DE CONTROL (RIAS)": "Consultas de control según resolución 3280 RIAS, acercando los servicios de salud a la comunidad.",
+        "TOMA DE LABORATORIOS SEGUN RIA": "Jornadas comunitarias para la toma de muestras de laboratorio."
+    }
+
+    planes = []
+
+    # Evaluar los campos con True y agregar sus planes
+    for campo in BOOLEAN_COLUMNS:
+        if persona.get(campo) is True:
+            plan = plan_intervencion_estandarizado.get(campo)
+            if plan:
+                planes.append(f"- {plan}")
+
+    # Construir el texto final
+    texto_final = "Plan de intervención propuesto:\n\n" + "\n".join(planes) if planes else "Sin planes de intervención sugeridos."
+
+    # Escribir en la celda
+    hoja[celda] = texto_final
+    hoja[celda].alignment = Alignment(wrap_text=True, vertical="top")
+
+    # Ajustar altura de la fila
+    fila = int(''.join(filter(str.isdigit, celda)))
+    num_lineas = texto_final.count("\n") + 1
+    hoja.row_dimensions[fila].height = 15 * num_lineas
