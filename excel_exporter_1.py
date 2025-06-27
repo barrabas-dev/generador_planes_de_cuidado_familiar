@@ -54,6 +54,7 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
         # Rellenar datos en la hoja base
         llenar_datos_en_hoja(hoja_modelo, primera_persona, hogar_info["integrantes"])
         insertar_imagenes_familiares(hoja_modelo, primera_persona["HOGAR"], "A17")
+        insertar_imagen_analisis(hoja_modelo, primera_persona["HOGAR"], "A19")
 
 
         # Para los demás seleccionados, duplicar la hoja base
@@ -61,6 +62,7 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
             nueva_hoja = copiar_hoja(wb, hoja_modelo, persona["NUMERO DE IDENTIFICACIÓN"])
             llenar_datos_en_hoja(nueva_hoja, persona, hogar_info["integrantes"])
             insertar_imagenes_familiares(nueva_hoja, persona["HOGAR"], "A17")
+            insertar_imagen_analisis(nueva_hoja, persona["HOGAR"], "A19")
 
 
         wb.save(hogar_path)
@@ -151,8 +153,8 @@ def insertar_imagenes_familiares(hoja, hogar_id, celda_inicio, ancho_celda_px=80
     """
 
     # Rutas de las imágenes
-    ruta_ecomapa = f"assets/ecomapas/{hogar_id}.jpg"
-    ruta_familiograma = f"assets/familiogramas/{hogar_id}.jpg"
+    ruta_ecomapa = f"assets/imagenes/ecomapas/{hogar_id}.jpg"
+    ruta_familiograma = f"assets/imagenes/familiogramas/{hogar_id}.jpg"
 
     # Posición de destino para las imágenes
     col, fila = celda_inicio[0], int(celda_inicio[1:])
@@ -175,3 +177,41 @@ def insertar_imagenes_familiares(hoja, hogar_id, celda_inicio, ancho_celda_px=80
         img_fam.height = int(img_fam.width * 1)
         hoja.add_image(img_fam, f"{col_derecha}{fila}")
 
+#------------------------------------------------------------------------------------------------------------------------------------
+
+def insertar_imagen_analisis(hoja, hogar_id, celda_inicio, ancho_celda_px=800):
+    """
+    Inserta una imagen de análisis en una celda ajustando su tamaño al ancho de celda definido
+    y modificando la altura de la fila para adaptarse al alto de la imagen.
+
+    :param hoja: objeto worksheet de openpyxl
+    :param hogar_id: ID del hogar, usado para formar el nombre del archivo (ej: "H0005")
+    :param celda_inicio: celda donde se insertará la imagen (ej: "B30")
+    :param ancho_celda_px: ancho estimado en píxeles de la celda combinada
+    """
+    ruta_imagen = f"assets/imagenes/analisis/{hogar_id}.jpg"
+    
+    if not os.path.exists(ruta_imagen):
+        print(f"Imagen no encontrada: {ruta_imagen}")
+        return
+
+    # Cargar imagen original con PIL
+    with PILImage.open(ruta_imagen) as img:
+        ancho_original, alto_original = img.size
+        escala = ancho_celda_px / ancho_original
+        nuevo_alto = int(alto_original * escala)
+
+    # Crear imagen para openpyxl
+    img_excel = Image(ruta_imagen)
+    img_excel.width = ancho_celda_px
+    img_excel.height = nuevo_alto
+
+    # Calcular fila y columna desde la celda
+    col = celda_inicio[0]
+    fila = int(celda_inicio[1:])
+
+    # Ajustar altura de la fila en puntos (aproximadamente 0.75 puntos = 1 píxel)
+    hoja.row_dimensions[fila].height = nuevo_alto * 0.75
+
+    # Insertar imagen en la hoja
+    hoja.add_image(img_excel, celda_inicio)
