@@ -31,6 +31,8 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
 
     os.makedirs(salida_dir, exist_ok=True)
 
+    total_hojas_generadas = 0  # Contador de hojas
+
     for hogar_id, hogar_info in dato_nucleos.items():
         seleccionados = [
             p for p in hogar_info["integrantes"] if p.get("SELECCIONADO") is True
@@ -53,21 +55,24 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
 
         # Rellenar datos en la hoja base
         llenar_datos_en_hoja(hoja_modelo, primera_persona, hogar_info["integrantes"])
-        insertar_imagenes_familiares(hoja_modelo, primera_persona["HOGAR"], "A17")
-        insertar_imagen_analisis(hoja_modelo, primera_persona["HOGAR"], "A19")
+        insertar_imagenes_familiares(hoja_modelo, primera_persona["HOGAR"], "A21")
+        insertar_imagen_analisis(hoja_modelo, primera_persona["HOGAR"], "A23")
+        total_hojas_generadas += 1  # Contar esta hoja
 
 
         # Para los demás seleccionados, duplicar la hoja base
         for persona in seleccionados[1:]:
             nueva_hoja = copiar_hoja(wb, hoja_modelo, persona["NUMERO DE IDENTIFICACIÓN"])
             llenar_datos_en_hoja(nueva_hoja, persona, hogar_info["integrantes"])
-            insertar_imagenes_familiares(nueva_hoja, persona["HOGAR"], "A17")
-            insertar_imagen_analisis(nueva_hoja, persona["HOGAR"], "A19")
+            insertar_imagenes_familiares(nueva_hoja, persona["HOGAR"], "A21")
+            insertar_imagen_analisis(nueva_hoja, persona["HOGAR"], "A23")
+            total_hojas_generadas += 1  # Contar esta hoja
 
 
         wb.save(hogar_path)
 
     print(f"✅ Planes generados en: {salida_dir}")
+    print(f"📄 Total de hojas generadas: {total_hojas_generadas}")
 
 
 def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
@@ -84,10 +89,14 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
     hoja["G2"] = persona["HOGAR"]
     hoja["B5"] = persona["NOMBRE"]
     hoja["G5"] = persona["NUMERO DE IDENTIFICACIÓN"]
-    hoja["B6"] = persona["FECHA DE NACIMIENTO"].split()[0]
+    hoja["B6"] = f'{persona["FECHA DE NACIMIENTO"].split()[0]} - Toledo'
     hoja["G6"] = persona["EDAD"]
     hoja["B7"] = persona["Direccion"]
     hoja["G7"] = persona["TELEFONO"]
+    hoja["B25"] = "No Refiere"
+    hoja["B26"] = "No Refiere"
+    hoja["B28"] = "No Refiere"
+
 
 
     # --- Estructura Familiar ---
@@ -104,34 +113,34 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
         hoja[f"G{fila}"] = integrante["CONVIVE DENTRO DE LA CASA"]
 
     #----celdas de situaciones encontradas---
-    llenar_situaciones_en_hoja(hoja, persona, celda="B23")
+    llenar_situaciones_en_hoja(hoja, persona, celda="B27")
     
     #----celda de desarrollo por etapas-------
-    llenar_desarrollo_por_etapa(hoja, persona, celda="B25")
+    llenar_desarrollo_por_etapa(hoja, persona, celda="B29")
 
     #---celda de area personal-----------
-    llenar_area_personal_en_hoja(hoja, persona, celda="B27")
+    llenar_area_personal_en_hoja(hoja, persona, celda="B31")
     
     #---celda de area afectiva-----------
-    llenar_area_afectiva_en_hoja(hoja, persona, celda="B30")
+    llenar_area_afectiva_en_hoja(hoja, persona, celda="B34")
     
     #---celda de area social-----------
-    llenar_area_social_en_hoja(hoja, persona, celda="B28")
+    llenar_area_social_en_hoja(hoja, persona, celda="B32")
 
     #---celda de area educativa/ocupacional-----------
-    llenar_area_educativa_ocupacional_en_hoja(hoja, persona, celda="B29")
+    llenar_area_educativa_ocupacional_en_hoja(hoja, persona, celda="B33")
 
     #---celda de procesos de evaluacion-----------
-    llenar_acciones_en_hoja(hoja, persona, celda="A32")
+    llenar_acciones_en_hoja(hoja, persona, celda="A36")
 
     #----celda de impresion diagnostica------------
-    llenar_area_impresion_diagnostica_en_hoja(hoja, persona, celda="A34")
+    llenar_area_impresion_diagnostica_en_hoja(hoja, persona, celda="A38")
 
     #----celda de plan de intervencion-------------
-    llenar_plan_intervencion_en_hoja(hoja, persona, celda="A36")
+    llenar_plan_intervencion_en_hoja(hoja, persona, celda="A40")
 
     #----celda de colclusiones y recomendaciones--------
-    llenar_area_conclusion_en_hoja(hoja, persona, celda="A38")
+    llenar_area_conclusion_en_hoja(hoja, persona, celda="A42")
 
 
 

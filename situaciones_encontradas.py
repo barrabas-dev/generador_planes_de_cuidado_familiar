@@ -341,7 +341,7 @@ def llenar_acciones_en_hoja(hoja, persona, celda):
 
     fila = int(''.join(filter(str.isdigit, celda)))
     num_lineas = texto_final.count("\n") + 1
-    hoja.row_dimensions[fila].height = 15 * num_lineas
+    hoja.row_dimensions[fila].height = 18 * num_lineas
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -406,4 +406,4 @@ def llenar_plan_intervencion_en_hoja(hoja, persona, celda):
     # Ajustar altura de la fila
     fila = int(''.join(filter(str.isdigit, celda)))
     num_lineas = texto_final.count("\n") + 1
-    hoja.row_dimensions[fila].height = 15 * num_lineas
+    hoja.row_dimensions[fila].height = 18 * num_lineas
