@@ -1,13 +1,33 @@
 print("hola mundo")
-# main.py
+from dataclasses import asdict
 
+
+from encuesta_familiar_reader import leer_encuesta_familiar
+# main.py
+ruta_archivo_0 = "assets/encuesta.xlsx"
+ruta_archivo_1 = "assets/encuesta_familiar.xlsx"
+
+nucleo_seleccionados = leer_encuesta_familiar(ruta_archivo_1)
+
+# Conversión a un formato completamente serializable
+serializable_dict = {clave: asdict(valor) for clave, valor in nucleo_seleccionados.items()}
+
+# (Opcional) Imprimir el resultado
+import json
+print(json.dumps(serializable_dict, indent=2, ensure_ascii=False))
+    
+    
+
+
+#main de alterior proyecto para guiarme
+
+#'''
 from encuesta_reader import leer_encuesta
 
 # esta parte se encarga de obtener un diccionario con los datos de los encuestados organizados por nuleos familiares.
-ruta_archivo = "assets/encuesta.xlsx"
-nucleos = leer_encuesta(ruta_archivo) 
 
-import json
+nucleos = leer_encuesta(ruta_archivo_0) 
+
 
 # Convertimos a un formato serializable (los dataclass se transforman en dicts primero)
 serializable_dict = {
@@ -19,8 +39,8 @@ serializable_dict = {
 }
 
 # Guardar o imprimir como JSON bonito
-#print(json.dumps(serializable_dict, indent=4, ensure_ascii=False))
-
+print(json.dumps(serializable_dict, indent=4, ensure_ascii=False))
+'''
 # -----------------------------------------------------------------------------------------------------------
 from excel_exporter_1 import crear_planes_cuidado
 plantilla = "assets/plantillas/plantilla_base.xlsx"
@@ -28,3 +48,4 @@ carpeta_salida = "planes_de_cuidado"
 
 crear_planes_cuidado(serializable_dict, plantilla, carpeta_salida)
 
+'''

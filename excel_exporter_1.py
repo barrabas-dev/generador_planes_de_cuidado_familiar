@@ -56,7 +56,7 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
         # Rellenar datos en la hoja base
         llenar_datos_en_hoja(hoja_modelo, primera_persona, hogar_info["integrantes"])
         insertar_imagenes_familiares(hoja_modelo, primera_persona["HOGAR"], "A21")
-        insertar_imagen_analisis(hoja_modelo, primera_persona["HOGAR"], "A23")
+        insertar_texto_analisis(hoja_modelo, primera_persona["HOGAR"], "A23")
         total_hojas_generadas += 1  # Contar esta hoja
 
 
@@ -65,7 +65,7 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
             nueva_hoja = copiar_hoja(wb, hoja_modelo, persona["NUMERO DE IDENTIFICACIÓN"])
             llenar_datos_en_hoja(nueva_hoja, persona, hogar_info["integrantes"])
             insertar_imagenes_familiares(nueva_hoja, persona["HOGAR"], "A21")
-            insertar_imagen_analisis(nueva_hoja, persona["HOGAR"], "A23")
+            insertar_texto_analisis(nueva_hoja, persona["HOGAR"], "A23")
             total_hojas_generadas += 1  # Contar esta hoja
 
 
@@ -147,6 +147,7 @@ def llenar_datos_en_hoja(hoja, persona, todos_integrantes):
 
 
 #------------------------------------------------------------------------------------------------------------------------
+
 from openpyxl.drawing.image import Image
 from PIL import Image as PILImage
 
@@ -187,7 +188,44 @@ def insertar_imagenes_familiares(hoja, hogar_id, celda_inicio, ancho_celda_px=80
         hoja.add_image(img_fam, f"{col_derecha}{fila}")
 
 #------------------------------------------------------------------------------------------------------------------------------------
+def insertar_texto_analisis(hoja, hogar_id, celda_inicio, ancho_max_caracteres=100):
+    """
+    Inserta el texto de análisis en una celda, ajustando el alto de la fila según la longitud del texto.
 
+    :param hoja: objeto worksheet de openpyxl
+    :param hogar_id: ID del hogar, usado para formar el nombre del archivo .txt (ej: "H0005")
+    :param celda_inicio: celda donde se insertará el texto (ej: "B30")
+    :param ancho_max_caracteres: número aproximado de caracteres por línea (para estimar altura)
+    """
+    ruta_texto = f"assets/analisis/{hogar_id}.txt"
+    
+    if not os.path.exists(ruta_texto):
+        print(f"Texto de análisis no encontrado: {ruta_texto}")
+        return
+
+    # Leer contenido del archivo .txt
+    with open(ruta_texto, "r", encoding="utf-8") as f:
+        contenido = f.read().strip()
+
+    # Insertar texto en la celda correspondiente
+    hoja[celda_inicio] = contenido
+
+    # Ajustar altura de fila basada en cantidad de líneas estimadas
+    fila = int(''.join(filter(str.isdigit, celda_inicio)))
+    num_lineas_estimadas = max(1, len(contenido) // ancho_max_caracteres + 1)
+    hoja.row_dimensions[fila].height = num_lineas_estimadas * 15  # Ajuste básico
+
+    # (Opcional) Establecer ajuste de texto en la celda
+    hoja[celda_inicio].alignment = hoja[celda_inicio].alignment.copy(wrap_text=True)
+
+
+
+
+
+
+
+
+'''
 def insertar_imagen_analisis(hoja, hogar_id, celda_inicio, ancho_celda_px=800):
     """
     Inserta una imagen de análisis en una celda ajustando su tamaño al ancho de celda definido
@@ -224,3 +262,5 @@ def insertar_imagen_analisis(hoja, hogar_id, celda_inicio, ancho_celda_px=800):
 
     # Insertar imagen en la hoja
     hoja.add_image(img_excel, celda_inicio)
+
+'''
