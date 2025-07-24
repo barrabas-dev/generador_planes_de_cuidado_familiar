@@ -33,7 +33,7 @@ serializable_dict_nucleos_datos = {
 }
 
 # Guardar o imprimir como JSON bonito
-#print(json.dumps(serializable_dict, indent=4, ensure_ascii=False))
+#rint(json.dumps(serializable_dict_nucleos, indent=4, ensure_ascii=False))
 
 # -----------------------------------------------------------------------------------------------------------
 from excel_exporter_2 import crear_planes_cuidado_familiares

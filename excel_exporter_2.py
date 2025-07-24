@@ -1,7 +1,6 @@
 import os
 import shutil
 from openpyxl import load_workbook
-from datetime import datetime
 from openpyxl.cell import MergedCell
 
 
@@ -38,12 +37,17 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         hoja = wb.worksheets[0]
         hoja.title = nucleo_id
 
-        # Extraer información del plan
-        fecha_visita = plan_info.get("Fecha de la Visita", "")
-        resultado_apgar = plan_info.get("Resultado del APGAR", "")
+        # Obtener info del plan
+        fecha_visita = plan_info.get("fecha_visita")
+       
+
 
         # Llenar información en la hoja
         anexar_texto(hoja, "X8", nucleo_id)
+        anexar_texto(hoja, "B8", "Toledo")
+        anexar_texto(hoja, "H8", "Santa Lucia") #para modificar barrio o vereda
+        #anexar_fecha_en_celdas(hoja, "C10", fecha_visita)
+
 
         # Llenar nombre de la primera persona del núcleo en B13
         if integrantes:
@@ -66,6 +70,7 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
 
         wb.save(salida_path)
         print(f"✅ Plan generado para núcleo {nucleo_id}: {salida_path}")
+        print(fecha_visita)
 
 #Funcion para anexar texto a las celdas
 def anexar_texto(hoja, ref, nuevo_valor):
@@ -89,6 +94,9 @@ def anexar_texto(hoja, ref, nuevo_valor):
 
     texto_existente = celda.value or ""
     celda.value = f"{texto_existente} {nuevo_valor}".strip()
+
+
+#funcion para separar la fecha
 
 
 #if __name__ == "__main__":
