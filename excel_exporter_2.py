@@ -28,7 +28,7 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
             print(f"⚠️  Núcleo {nucleo_id} no encontrado en datos de integrantes. Se omite.")
             continue
 
-        #integrantes = dato_nucleos[nucleo_id]["integrantes"]
+        integrantes = dato_nucleos[nucleo_id]["integrantes"]
 
         # Crear copia del archivo base
         salida_path = os.path.join(salida_dir, f"{nucleo_id}.xlsx")
@@ -44,6 +44,16 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
 
         # Llenar información en la hoja
         anexar_texto(hoja, "X8", nucleo_id)
+
+        # Llenar nombre de la primera persona del núcleo en B13
+        if integrantes:
+            primer_nombre = integrantes[0].get("NOMBRE", "")
+            anexar_texto(hoja, "B13", primer_nombre)
+        else:
+            print(f"⚠️ Núcleo {nucleo_id} no tiene integrantes. B13 quedará sin nombre.")
+
+
+
         #anexar_texto(hoja["B4"], fecha_visita)
         #anexar_texto(hoja["B5"], resultado_apgar)
         '''
@@ -82,3 +92,6 @@ def anexar_texto(hoja, ref, nuevo_valor):
 
 
 #if __name__ == "__main__":
+
+
+

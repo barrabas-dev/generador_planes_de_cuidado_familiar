@@ -32,3 +32,154 @@ las celdas marcadas con x se asumiran como "true" y las vacias como "false"
 los encabezados de la encuesta estaran ubicados en la linea 2 de la hoja
 
 "}
+
+
+{2:tengo un modulo llamado excel exporter, voy a reutilizarlo en otro proyecto, este modulo se encarga de crear copias de una plantilla de excel para luego diligenciarla, pero trabaja por nucleo familiares y crea hojas dependiendo de sus integrantes desde un solo diccionario, 
+El nuevo modulo se encargara de crear planes de cuidado familires uno por nucleo. solo contendra una hoja por nucleo y trabajar con dos diccionarios uno que contendra la informacion de los integantes de los nucleo es el mismo de la anterior mudulo y ademas de un nuevo diccionario que contendra informacion adicional por nucleo ejemplo.
+
+(--- Núcleo Familiar: H0073 ---
+Fecha de la Visita: 2025-05-12
+Resultado del APGAR: 17 A 20
+Factores identificados:
+  COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES: False
+  INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD: False
+  RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO: False
+  ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES: False
+  RIESGO DE MAL NUTRICIÓN: False
+  ACTIVIDADES DEPORTIVAS COMUNITARIAS: True
+  ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS: False
+  RED DE APOYO COMUNITARIO: False
+  SOBRECARGA DE CUIDADOR: False
+
+--- Núcleo Familiar: H0074 ---
+Fecha de la Visita: 2025-05-12
+Resultado del APGAR: 16 A 13
+Factores identificados:
+  COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES: False
+  INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD: False
+  RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO: False
+  ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES: False
+  RIESGO DE MAL NUTRICIÓN: False
+  ACTIVIDADES DEPORTIVAS COMUNITARIAS: True
+  ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS: False
+  RED DE APOYO COMUNITARIO: False
+  SOBRECARGA DE CUIDADOR: False)
+ayudame teniendo en cuenta el codigo que te voy a proporcionar, a crear este nuevo modulo, donde me cree una copia de la plantilla por nucleo familiar teniendo como fuente el segundo diccionario ya que no se crearan planes para todos los nucleos, solo para los elejidos en el segundo diccionario.
+
+Este modulo se utilizara en un proyecto profesional, por favr maneja buenas practicas y comenta con claridad para entender mejor.
+
+(import os
+import shutil
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
+from datetime import datetime
+from situaciones_encontradas import llenar_situaciones_en_hoja, llenar_desarrollo_por_etapa, llenar_area_afectiva_en_hoja, llenar_area_personal_en_hoja, llenar_area_social_en_hoja, llenar_area_educativa_ocupacional_en_hoja, llenar_acciones_en_hoja, llenar_area_impresion_diagnostica_en_hoja, llenar_plan_intervencion_en_hoja, llenar_area_conclusion_en_hoja
+
+
+
+
+def copiar_hoja(wb, hoja_origen, nuevo_nombre):
+    """
+    Crea una copia de una hoja dentro del libro con un nuevo nombre.
+    """
+    nueva_hoja = wb.copy_worksheet(hoja_origen)
+    nueva_hoja.title = nuevo_nombre
+    return nueva_hoja
+
+
+def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: str):
+    """
+    Genera archivos Excel por hogar con hojas individuales por persona seleccionada.
+
+    :param dato_nucleos: Diccionario con hogares e integrantes.
+    :param plantilla_path: Ruta al archivo plantilla Excel.
+    :param salida_dir: Carpeta destino para los archivos generados.
+    """
+
+    if not os.path.isfile(plantilla_path):
+        raise FileNotFoundError(f"Plantilla no encontrada: {plantilla_path}")
+
+    os.makedirs(salida_dir, exist_ok=True)
+
+
+    for hogar_id, hogar_info in dato_nucleos.items():
+        seleccionados = [
+            p for p in hogar_info["integrantes"] if p.get("SELECCIONADO") is True
+        ]
+
+        if not seleccionados:
+            continue
+
+        # Crear archivo base desde plantilla
+        hogar_filename = f"{hogar_id}.xlsx"
+        hogar_path = os.path.join(salida_dir, hogar_filename)
+        shutil.copy(plantilla_path, hogar_path)
+
+        wb = load_workbook(hogar_path)
+        hoja_modelo = wb.worksheets[0]  # Primera hoja como base
+
+        # Procesar el primer seleccionado usando la hoja original
+        primera_persona = seleccionados[0]
+        hoja_modelo.title = primera_persona["NUMERO DE IDENTIFICACIÓN"]
+
+        # Rellenar datos en la hoja base
+        llenar_datos_en_hoja(hoja_modelo, primera_persona, hogar_info["integrantes"])
+        insertar_imagenes_familiares(hoja_modelo, primera_persona["HOGAR"], "A21")
+        insertar_texto_analisis(hoja_modelo, primera_persona["HOGAR"], "A23")
+        total_hojas_generadas += 1  # Contar esta hoja
+
+
+        # Para los demás seleccionados, duplicar la hoja base
+        for persona in seleccionados[1:]:
+            nueva_hoja = copiar_hoja(wb, hoja_modelo, persona["NUMERO DE IDENTIFICACIÓN"])
+            llenar_datos_en_hoja(nueva_hoja, persona, hogar_info["integrantes"])
+            insertar_imagenes_familiares(nueva_hoja, persona["HOGAR"], "A21")
+            insertar_texto_analisis(nueva_hoja, persona["HOGAR"], "A23")
+            total_hojas_generadas += 1  # Contar esta hoja
+
+
+        wb.save(hogar_path)
+
+    print(f"✅ Planes generados en: {salida_dir}"))}
+
+#-------------------
+{3:quiero Convertir a un formato serializable (los dataclass se transforman en dicts primero){('H0003': EvaluacionFamiliar(fecha_visita='2025-05-05',
+                             nucleo_familiar='H0003',
+                             resultado_apgar='17 A 20',
+                             factores={'ACTIVIDADES DEPORTIVAS COMUNITARIAS': True,
+                                       'ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS': False,
+                                       'COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES': False,
+                                       'ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES': False,
+                                       'INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD': False,
+                                       'RED DE APOYO COMUNITARIO': False,
+                                       'RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO': False,
+                                       'RIESGO DE MAL NUTRICIÓN': False,
+                                       'SOBRECARGA DE CUIDADOR': False}),
+ 'H0004': EvaluacionFamiliar(fecha_visita='2025-05-05',
+                             nucleo_familiar='H0004',
+                             resultado_apgar='17 A 20',
+                             factores={'ACTIVIDADES DEPORTIVAS COMUNITARIAS': True,
+                                       'ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS': False,
+                                       'COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES': False,
+                                       'ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES': False,
+                                       'INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD': False,
+                                       'RED DE APOYO COMUNITARIO': False,
+                                       'RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO': False,
+                                       'RIESGO DE MAL NUTRICIÓN': False,
+                                       'SOBRECARGA DE CUIDADOR': False}),
+ 'H0005': EvaluacionFamiliar(fecha_visita='2025-05-05',
+                             nucleo_familiar='H0005',
+                             resultado_apgar='16 A 13',
+                             factores={'ACTIVIDADES DEPORTIVAS COMUNITARIAS': True,
+                                       'ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS': False,
+                                       'COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES': False,
+                                       'ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES': False,
+                                       'INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD': False,
+                                       'RED DE APOYO COMUNITARIO': False,
+                                       'RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO': False,
+                                       'RIESGO DE MAL NUTRICIÓN': False,
+                                       'SOBRECARGA DE CUIDADOR': False}),}}
+
+
+#-------------------------------------------------
+{4: Debo extraer informacion del diccionario 'planes_nucleos' para llenar las celdas de datos personales, debo extraer el nombre de la primera persona que compone el nucleo familiar para diligenciar la celda B:13}
