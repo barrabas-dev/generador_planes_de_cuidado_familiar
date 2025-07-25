@@ -86,6 +86,9 @@ def leer_encuesta_familiar(path_excel: str, hoja: str = None) -> Dict[str, Evalu
     return resultados
 
 
+
+#----------------------------------------------------------------
+
 #test-funtion
 '''
 if __name__ == "__main__":
@@ -105,21 +108,4 @@ if __name__ == "__main__":
             print(f"  {factor}: {valor}")
 #'''
 
-if __name__ == "__main__":
-    # Ruta al archivo Excel que quieres probar
-    ruta_excel = "assets/encuesta_familiar.xlsx"  # cámbialo por el nombre real si es distinto
 
-    # Llamamos la función
-    evaluaciones = leer_encuesta_familiar(ruta_excel)
-
-    print(f"\nTipo de 'evaluaciones': {type(evaluaciones)}")  # dict
-
-    # Imprimimos los resultados
-    for nucleo_id, evaluacion in evaluaciones.items():
-        print(f"\n--- Núcleo Familiar: {nucleo_id} ({type(nucleo_id)}) ---")
-        print(f"Fecha de la Visita: {evaluacion.fecha_visita} ({type(evaluacion.fecha_visita)})")
-        print(f"Resultado del APGAR: {evaluacion.resultado_apgar} ({type(evaluacion.resultado_apgar)})")
-        
-        print(f"Factores identificados: {type(evaluacion.factores)}")
-        for factor, valor in evaluacion.factores.items():
-            print(f"  {factor} ({type(factor)}): {valor} ({type(valor)})")

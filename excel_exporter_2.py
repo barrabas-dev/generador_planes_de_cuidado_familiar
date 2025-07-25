@@ -2,8 +2,10 @@ import os
 import shutil
 from openpyxl import load_workbook
 from openpyxl.cell import MergedCell
+from openpyxl.styles import Alignment
+from math import ceil
 from openpyxl.utils import get_column_letter, column_index_from_string
-from factores_encontrados import obtener_acuerdo_completo_apgar
+from factores_encontrados import obtener_acuerdo_completo_apgar, obtener_fortalezas_apgar
 
 def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, plantilla_path: str, salida_dir: str):
     """
@@ -53,6 +55,10 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         anexar_texto(hoja, "C16", resultado_apgar, ajustar_altura=False)
         anexar_texto(hoja,"E17", acuerdo_apgar, ancho_estimado=70)
 
+        # Escribir fortalezas en las celdas especificadas
+        celdas_destino = ("B30", "B32", "M30", "M32")
+        fortalezas = obtener_fortalezas_apgar(resultado_apgar)
+        escribir_fortalezas_en_celdas(hoja, celdas=celdas_destino, fortalezas=fortalezas)
 
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
@@ -165,6 +171,17 @@ def anexar_texto(hoja, ref, nuevo_valor, ajustar_altura=True, ancho_estimado=60)
     texto_existente = celda.value or ""
     celda.value = f"{texto_existente} {nuevo_valor}".strip()
 
+
+    # Activar ajuste de texto si no está activo (ojito)
+    alineacion_actual = celda.alignment or Alignment()
+    if not alineacion_actual.wrapText:
+        celda.alignment = Alignment(
+            horizontal=alineacion_actual.horizontal,
+            vertical=alineacion_actual.vertical or "top",
+            wrapText=True
+        )
+
+
     # Ajustar altura de la fila según el contenido (opcional)
     if ajustar_altura:
         texto = celda.value or ""
@@ -196,6 +213,30 @@ def anexar_fecha_en_celdas(hoja, celda_inicio: str, fecha_tupla: tuple):
     hoja[f"{get_column_letter(col_index)}{fila}"] = dia
     hoja[f"{get_column_letter(col_index + 1)}{fila}"] = mes
     hoja[f"{get_column_letter(col_index + 2)}{fila}"] = anio
+
+#---------------Funcion para añadir fortalezas a plantilla---------------------
+
+from openpyxl.worksheet.worksheet import Worksheet
+from typing import Tuple
+
+def escribir_fortalezas_en_celdas(
+    hoja,
+    celdas: Tuple[str, str, str, str],
+    fortalezas: Tuple[str, str, str, str]
+) -> None:
+    """
+    Escribe cada fortaleza en una celda específica no consecutiva.
+
+    Parámetros:
+        hoja (Worksheet): Hoja de cálculo de openpyxl donde se escribirá.
+        celdas (Tuple[str, str, str, str]): Coordenadas de celdas como strings (ej: "B7", "D9", ...).
+        fortalezas (Tuple[str, str, str, str]): Tupla con los textos a escribir en las celdas.
+    """
+
+    for celda, texto in zip(celdas, fortalezas):
+        anexar_texto(hoja, celda, texto, ancho_estimado=80)
+
+
 
 
 #if __name__ == "__main__":

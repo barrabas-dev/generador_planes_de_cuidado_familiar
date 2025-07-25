@@ -46,7 +46,7 @@ acuerdos_apgar: Dict[str, Dict[str, str]] = {
 
 #celda -fortalezas de la familia
 
-fortalezas_apgar = {
+fortalezas_apgar: Dict[str, Dict[str, str]] = {
     "17-20": {
         "FORTALEZA 1": "Los miembros de la familia expresan libremente sus emociones, positivas y negativas. Esta comunicación emocional fortalece los vínculos afectivos y promueve la comprensión, la aceptación y la escucha activa.",
         "FORTALEZA 2": "Existe un diálogo abierto donde se valoran todas las opiniones. La familia resuelve conflictos de forma pacífica, con comprensión mutua y trabajo colaborativo ante desacuerdos cotidianos.",

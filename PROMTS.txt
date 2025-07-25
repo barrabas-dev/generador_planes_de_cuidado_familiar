@@ -235,3 +235,34 @@ Quiero que la funcion me retorne el string, este string se usara para diligencia
 Maneja buenas practicas, comenta para entender la funcion, ya que esto se usara para un proyecto profesional.
 
 }
+
+{5: Necesito crear una funcion la que dependiendo de la calificacion apgar que recibira la funcion como string, me returne una tupla con cuatro fortalezas, cada unidad de la tupla contedra el valor contenido en el diccionario con el que trabajaremos, el diccionario esta compuesto de la calificacion apgar(17 A 20, 16 A 13, 12 A 10, 9) y claves:valor con las descripciones de las frotalezas. 
+
+fortalezas_apgar = {
+    "17-20": {
+        "FORTALEZA 1": "Los miembros de la familia expresan libremente sus emociones, positivas y negativas. Esta comunicación emocional fortalece los vínculos afectivos y promueve la comprensión, la aceptación y la escucha activa.",
+        "FORTALEZA 2": "Existe un diálogo abierto donde se valoran todas las opiniones. La familia resuelve conflictos de forma pacífica, con comprensión mutua y trabajo colaborativo ante desacuerdos cotidianos.",
+        "FORTALEZA 3": "La familia se reorganiza de forma efectiva ante cambios o dificultades, tomando decisiones conjuntas y buscando apoyo externo si es necesario. Mantienen una actitud resiliente.",
+        "FORTALEZA 4": "Todos los miembros se sienten respaldados y emocionalmente seguros, especialmente en momentos difíciles. El apoyo constante crea un ambiente confiable y protector."
+    },
+    "16-13": {
+        "FORTALEZA 1": "Aunque hay disposición, existen dificultades ocasionales para expresar emociones, lo que puede generar malentendidos y limitar la conexión emocional.",
+        "FORTALEZA 2": "Se intenta mantener la comunicación, pero los desacuerdos pueden generar tensiones. A veces se evita abordar los problemas directamente, lo que impide acuerdos duraderos.",
+        "FORTALEZA 3": "La familia intenta reorganizarse ante situaciones adversas, aunque con dificultades para manejar el estrés. Puede haber incertidumbre que afecta el funcionamiento familiar temporalmente.",
+        "FORTALEZA 4": "Hay reconocimiento del apoyo mutuo, pero no siempre es constante. Pueden surgir sentimientos de soledad o falta de contención emocional en momentos críticos."
+    },
+    "12-10": {
+        "FORTALEZA 1": "La expresión emocional es limitada. Frecuentemente se evitan conversaciones sobre emociones, lo que debilita la empatía y la conexión afectiva.",
+        "FORTALEZA 2": "La comunicación es ineficaz. Los conflictos suelen escalar y resolverse de forma poco saludable. Prevalece el silencio, la evasión o reacciones impulsivas.",
+        "FORTALEZA 3": "Hay desorganización y poca coordinación frente a dificultades. Las decisiones son fragmentadas, y algunos miembros experimentan sobrecarga emocional.",
+        "FORTALEZA 4": "Varios miembros no se sienten apoyados o seguros. En momentos difíciles, puede faltar contención, generando vulnerabilidad emocional, especialmente en los más sensibles."
+    },
+    "9": {
+        "FORTALEZA 1": "Existe una profunda dificultad para compartir emociones. Esto genera aislamiento emocional, resentimientos acumulados y desconexión afectiva.",
+        "FORTALEZA 2": "Los conflictos se evitan o se manejan de forma destructiva. No hay espacios seguros de diálogo y la falta de respeto y escucha deteriora la dinámica familiar.",
+        "FORTALEZA 3": "La familia no logra reorganizarse ni apoyarse mutuamente ante adversidades. El afrontamiento es individual y caótico, lo que perpetúa una sensación de crisis.",
+        "FORTALEZA 4": "El sentimiento de protección es muy bajo. En situaciones difíciles, los miembros se sienten desatendidos, lo que impacta su salud emocional y física."
+    }
+}
+
+}
