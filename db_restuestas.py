@@ -1,7 +1,8 @@
+from typing import Dict
 #celda e:17 seguimiento, acuerdo
-
-acuerdos_apgar = {
-    "17-20": {
+# Diccionario con acuerdos según los rangos de resultado APGAR
+acuerdos_apgar: Dict[str, Dict[str, str]] = {
+    "17 A 20": {
         "titulo": "Fortalecimiento de capacidades y liderazgo familiar",
         "acuerdo": (
             "Se fortalecerán las capacidades del núcleo familiar para sostener prácticas saludables de "
@@ -11,7 +12,7 @@ acuerdos_apgar = {
             "consolidación de vínculos afectivos positivos."
         )
     },
-    "16-13": {
+    "16 A 13": {
         "titulo": "Mejoramiento de hábitos y organización familiar",
         "acuerdo": (
             "Se brindará acompañamiento para mejorar hábitos cotidianos de cuidado, promoviendo una comunicación "
@@ -21,7 +22,7 @@ acuerdos_apgar = {
             "integrantes."
         )
     },
-    "12-10": {
+    "12 A 10": {
         "titulo": "Intervención para la mejora de vínculos y convivencia",
         "acuerdo": (
             "Se implementará un plan de intervención familiar con énfasis en el fortalecimiento de vínculos, el "

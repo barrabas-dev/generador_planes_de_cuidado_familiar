@@ -183,3 +183,55 @@ def crear_planes_cuidado(dato_nucleos: dict, plantilla_path: str, salida_dir: st
 
 #-------------------------------------------------
 {4: Debo extraer informacion del diccionario 'planes_nucleos' para llenar las celdas de datos personales, debo extraer el nombre de la primera persona que compone el nucleo familiar para diligenciar la celda B:13}
+
+
+{5: Nececito generar una funcion en python que dependiendo a un resultado apgar que se obtendra de un string me entregue seleccione el acuerdo correspóndiente, este texto se extraera de un diccionario:
+
+{acuerdos_apgar = {
+    "17-20": {
+        "titulo": "Fortalecimiento de capacidades y liderazgo familiar",
+        "acuerdo": (
+            "Se fortalecerán las capacidades del núcleo familiar para sostener prácticas saludables de "
+            "alimentación, higiene, autocuidado y asistencia regular a servicios de salud. Además, se promoverá "
+            "el liderazgo familiar en la comunidad, la participación en espacios colectivos y el desarrollo de "
+            "redes de apoyo solidarias, reconociendo su rol activo en la promoción del bienestar integral y la "
+            "consolidación de vínculos afectivos positivos."
+        )
+    },
+    "16-13": {
+        "titulo": "Mejoramiento de hábitos y organización familiar",
+        "acuerdo": (
+            "Se brindará acompañamiento para mejorar hábitos cotidianos de cuidado, promoviendo una comunicación "
+            "más efectiva, la organización de rutinas familiares, el cumplimiento de controles de salud y la "
+            "distribución de responsabilidades en el hogar. Estas acciones buscan fortalecer el funcionamiento "
+            "familiar, reducir tensiones y fomentar un entorno protector que favorezca el desarrollo de sus "
+            "integrantes."
+        )
+    },
+    "12-10": {
+        "titulo": "Intervención para la mejora de vínculos y convivencia",
+        "acuerdo": (
+            "Se implementará un plan de intervención familiar con énfasis en el fortalecimiento de vínculos, el "
+            "manejo de conflictos y la reorganización de roles. Se facilitará el acceso a servicios sociales y "
+            "de salud, así como la participación en espacios psicoeducativos para mejorar la convivencia, la "
+            "toma de decisiones compartida y el establecimiento de normas básicas de funcionamiento."
+        )
+    },
+    "9": {
+        "titulo": "Abordaje integral y restitución de derechos",
+        "acuerdo": (
+            "Se gestionará un abordaje integral e intensivo que priorice la protección de los miembros más "
+            "vulnerables del núcleo familiar, mediante intervenciones psicosociales, jurídicas y de salud. Se "
+            "orientará a la familia hacia la reconstrucción de sus relaciones internas, el restablecimiento de "
+            "condiciones mínimas de cuidado y la articulación con instituciones que garanticen la restitución "
+            "de derechos y la contención emocional."
+        )
+    }
+}
+}
+
+Quiero que la funcion me retorne el string, este string se usara para diligenciar una celda en excel por otra funcion.
+
+Maneja buenas practicas, comenta para entender la funcion, ya que esto se usara para un proyecto profesional.
+
+}
