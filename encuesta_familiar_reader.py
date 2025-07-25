@@ -90,7 +90,7 @@ def leer_encuesta_familiar(path_excel: str, hoja: str = None) -> Dict[str, Evalu
 #----------------------------------------------------------------
 
 #test-funtion
-'''
+#'''
 if __name__ == "__main__":
   # Ruta al archivo Excel que quieres probar
     ruta_excel = "assets/encuesta_familiar.xlsx"  # cámbialo por el nombre real si es distinto

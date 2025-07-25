@@ -1,5 +1,5 @@
 from typing import Optional
-from db_restuestas import acuerdos_apgar
+from db_restuestas import acuerdos_apgar, factores_dict
 
 #-----------------------------------------------------------------------------------------------------
 def obtener_acuerdo_completo_apgar(resultado: str) -> Optional[str]:
@@ -75,8 +75,127 @@ def obtener_fortalezas_apgar(calificacion: str) -> Tuple[str, str, str, str]:
         # Esto captura errores si faltan claves internas inesperadamente
         raise ValueError(f"Datos incompletos para la calificación '{calificacion_normalizada}': falta {e}")
     
+
+#------------------funcion para agregar textos en cuidado de salud familiar-------------------------------------------------------------
+
+from typing import Dict, Tuple, List
+
+def generar_textos_factores(
+    datos_nucleo: Dict[str, Dict],
+    factores_dict: Dict[str, Dict[str, str]]
+) -> Tuple[str, str, str, str]:
+    """
+    Genera una tupla con los textos correspondientes a hallazgo, compromiso, logro trazador y logro intermedio,
+    basados en los factores marcados como `True` o `False` en los datos del núcleo familiar.
+
+    Si ninguno de los factores clave está marcado como `True`, se retorna un texto general sin hallazgos y los demás campos vacíos.
+
+    :param datos_nucleo: Diccionario que contiene los datos del núcleo familiar, incluyendo factores con valores booleanos.
+    :param factores_dict: Diccionario maestro con los textos asociados a cada factor.
+    :return: Tupla con 4 cadenas de texto (listas para celdas de Excel): hallazgo_identificado, compromiso_concertado,
+             logro_trazador, logro_intermedio.
+    """
+
+    # Lista de factores de interés (se ignoran los demás)
+    factores_clave = [
+        "COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES",
+        "INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD",
+        "RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO",
+        "ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES",
+        "RIESGO DE MAL NUTRICIÓN"
+    ]
+
+    # Inicializamos listas para acumular los textos correspondientes
+    hallazgos = []
+    compromisos = []
+    trazadores = []
+    intermedios = []
+
+    # Extraemos los factores del núcleo (ej: datos_nucleo['H0001']['factores'])
+    factores_reportados = list(datos_nucleo.values())[0].get('factores', {})
+
+    # Recorremos los factores de interés
+    for factor in factores_clave:
+        if factores_reportados.get(factor) is True:
+            info = factores_dict.get(factor, {})
+            # Se agregan los textos con saltos de línea para formato en celdas Excel
+            hallazgos.append(info.get("hallazgo_identificado", ""))
+            compromisos.append(info.get("compromiso_concertado", ""))
+            trazadores.append(info.get("logro_trazador", ""))
+            intermedios.append(info.get("logro_intermedio", ""))
+
+    # Si no se encontró ningún factor con True, usamos plantilla sin hallazgos
+    if not hallazgos:
+        texto_sin_hallazgos = factores_dict.get("plantilla_sin_hallazgos", "")
+        return (texto_sin_hallazgos, "", "", "")
+    
+    # Se concatenan los textos con saltos de línea para mayor claridad
+    return (
+        "\n\n".join(hallazgos),
+        "\n\n".join(compromisos),
+        "\n\n".join(trazadores),
+        "\n\n".join(intermedios),
+    )
+
 #-------------------------test-------------------------------------------
 
+def main():
+    
+    try:
+        # Calificación APGAR ingresada por algún sistema externo, usuario o archivo
+        datos = {
+            'H0001': {
+                'fecha_visita': (15, 6, 2025),
+                'resultado_apgar': '17 A 20',
+                'factores': {
+                    'COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES': True,
+                    'INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD': False,
+                    'RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO': False,
+                    'ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES': True,
+                    'RIESGO DE MAL NUTRICIÓN': False,
+                    'ACTIVIDADES DEPORTIVAS COMUNITARIAS': False,
+                    'ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS': False,
+                    'RED DE APOYO COMUNITARIO': False,
+                    'SOBRECARGA DE CUIDADOR': False
+                        }
+            }
+        }
+
+        tupla_textos = generar_textos_factores(datos, factores_dict)
+       
+
+        def imprimir_textos_celda(textos: Tuple[str, str, str, str]) -> None:
+            """
+            Imprime los cuatro textos contenidos en una tupla, uno por uno con su respectiva etiqueta.
+            
+            :param textos: Tupla con los textos a imprimir (hallazgo, compromiso, logro trazador, logro intermedio).
+            """
+            etiquetas = [
+                "🟡 HALLAZGO IDENTIFICADO:",
+                "🟠 COMPROMISO CONCERTADO:",
+                "🟢 LOGRO TRAZADOR:",
+                "🔵 LOGRO INTERMEDIO:"
+            ]
+
+            for etiqueta, contenido in zip(etiquetas, textos):
+                print(etiqueta)
+                print(contenido if contenido else "[Sin contenido]")
+                print("-" * 80)  # Separador visual
+
+
+        imprimir_textos_celda(tupla_textos)
+       
+    except ValueError as e:
+        # Manejo de errores: entrada inválida o datos incompletos
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+#-----------------------------------------------------------------------------------------
+'''   
 def main():
     try:
         # Calificación APGAR ingresada por algún sistema externo, usuario o archivo
@@ -96,8 +215,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+''' 
 
-
+#---------------------------------------------------------------------
 
 
 '''

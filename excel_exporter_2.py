@@ -56,9 +56,9 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         anexar_texto(hoja,"E17", acuerdo_apgar, ancho_estimado=70)
 
         # Escribir fortalezas en las celdas especificadas
-        celdas_destino = ("B30", "B32", "M30", "M32")
+        celdas_destino_fortalezas = ("B30", "B32", "M30", "M32")
         fortalezas = obtener_fortalezas_apgar(resultado_apgar)
-        escribir_fortalezas_en_celdas(hoja, celdas=celdas_destino, fortalezas=fortalezas)
+        escribir_fortalezas_en_celdas(hoja, celdas=celdas_destino_fortalezas, fortalezas=fortalezas)
 
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
