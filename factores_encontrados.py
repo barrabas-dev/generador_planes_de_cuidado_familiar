@@ -112,7 +112,8 @@ def generar_textos_factores(
     intermedios = []
 
     # Extraemos los factores del núcleo (ej: datos_nucleo['H0001']['factores'])
-    factores_reportados = list(datos_nucleo.values())[0].get('factores', {})
+    factores_reportados = datos_nucleo.get('factores', {})
+
 
     # Recorremos los factores de interés
     for factor in factores_clave:
@@ -144,7 +145,7 @@ def main():
     try:
         # Calificación APGAR ingresada por algún sistema externo, usuario o archivo
         datos = {
-            'H0001': {
+            
                 'fecha_visita': (15, 6, 2025),
                 'resultado_apgar': '17 A 20',
                 'factores': {
@@ -158,7 +159,7 @@ def main():
                     'RED DE APOYO COMUNITARIO': False,
                     'SOBRECARGA DE CUIDADOR': False
                         }
-            }
+            
         }
 
         tupla_textos = generar_textos_factores(datos, factores_dict)

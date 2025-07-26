@@ -273,16 +273,15 @@ entondes intenta rellenar las celdas individual mente
 
 {7: Debo crear una funcion que recibira un diccionario con la siquiente estructura.
 
-    {
-        'H0001': {
+   {
             'fecha_visita': [15, 6, 2025],  # la tupla se convierte en lista al serializarla
             'resultado_apgar': '17 A 20',
             'factores': {
                 'SOBRECARGA DE CUIDADOR': True,
                 'RED DE APOYO COMUNITARIO': False
             }
-        }
-    }
+   }
+    
 
 
 Esta funcion debe identificar los siguientes factores sin tener en cuenta los demas('COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES',

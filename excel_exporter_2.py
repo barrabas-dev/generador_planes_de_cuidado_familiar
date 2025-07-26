@@ -5,7 +5,7 @@ from openpyxl.cell import MergedCell
 from openpyxl.styles import Alignment
 from math import ceil
 from openpyxl.utils import get_column_letter, column_index_from_string
-from factores_encontrados import obtener_acuerdo_completo_apgar, obtener_fortalezas_apgar
+from factores_encontrados import obtener_acuerdo_completo_apgar, obtener_fortalezas_apgar, generar_textos_factores
 
 def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, plantilla_path: str, salida_dir: str):
     """
@@ -46,6 +46,7 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         resultado_apgar = plan_info.get("resultado_apgar")
         acuerdo_apgar = (obtener_acuerdo_completo_apgar(resultado_apgar) or "BOlO").strip()
 
+
         # Llenar información en la hoja
         anexar_texto(hoja, "X8", nucleo_id, ajustar_altura=False)
         anexar_texto(hoja, "B8", "Toledo", ajustar_altura=False)
@@ -59,6 +60,17 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         celdas_destino_fortalezas = ("B30", "B32", "M30", "M32")
         fortalezas = obtener_fortalezas_apgar(resultado_apgar)
         escribir_fortalezas_en_celdas(hoja, celdas=celdas_destino_fortalezas, fortalezas=fortalezas)
+
+        # Escribir respuestas por hallazgos cuidado en salud familiar
+        from db_restuestas import factores_dict
+        celdas_destino_cuidado_hallazgos = ("C37", "I37", "U37", "V37")
+        cuidado_hallazgos = generar_textos_factores(plan_info, factores_dict)
+        escribir_duidado_por_hallazgos_en_celdas(hoja, celdas=celdas_destino_cuidado_hallazgos, respuesta_hallazgos=cuidado_hallazgos)
+       
+
+
+
+
 
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
@@ -235,6 +247,27 @@ def escribir_fortalezas_en_celdas(
 
     for celda, texto in zip(celdas, fortalezas):
         anexar_texto(hoja, celda, texto, ancho_estimado=80)
+
+#---------------------funcion para añadir celdas cuidado salud familiar-----------------------------
+
+def escribir_duidado_por_hallazgos_en_celdas(
+    hoja,
+    celdas: Tuple[str, str, str, str],
+    respuesta_hallazgos: Tuple[str, str, str, str]
+) -> None:
+    """
+    Escribe cada fortaleza en una celda específica no consecutiva.
+
+    Parámetros:
+        hoja (Worksheet): Hoja de cálculo de openpyxl donde se escribirá.
+        celdas (Tuple[str, str, str, str]): Coordenadas de celdas como strings (ej: "B7", "D9", ...).
+        fortalezas (Tuple[str, str, str, str]): Tupla con los textos a escribir en las celdas.
+    """
+    anexar_texto(hoja, celdas[0], respuesta_hallazgos[0], ancho_estimado=50)
+    anexar_texto(hoja, celdas[1], respuesta_hallazgos[1], ajustar_altura=False)
+    anexar_texto(hoja, celdas[2], respuesta_hallazgos[2], ajustar_altura=False)
+    anexar_texto(hoja, celdas[3], respuesta_hallazgos[3], ajustar_altura=False)
+
 
 
 
