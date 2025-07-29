@@ -67,10 +67,16 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         cuidado_hallazgos = generar_textos_factores(plan_info, factores_dict)
         escribir_duidado_por_hallazgos_en_celdas(hoja, celdas=celdas_destino_cuidado_hallazgos, respuesta_hallazgos=cuidado_hallazgos)
        
+        #Llenar cuidado por curso de vida
+        from factores_encontrados import generar_tuplas_integrantes
+        from db_restuestas import datos_por_ciclo_vida
+
+        tuplas = generar_tuplas_integrantes(integrantes, datos_por_ciclo_vida)
+        rellenar_celdas_integrantes(hoja, tuplas)
 
 
-
-
+        #for t in tuplas: #ciclo para ver en consula si funciona la funcion
+            #print(t)
 
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
@@ -100,8 +106,12 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
 
         wb.save(salida_path)
         print(f"✅ Plan generado para núcleo {nucleo_id}: {salida_path}")
-        print("Valor:", resultado_apgar)
-        print("Tipo:", type(resultado_apgar))
+        #print("Valor:", resultado_apgar)
+        #print(integrantes.get("EDAD",""))
+
+        for i, persona in enumerate(integrantes, start=1):
+            edad = persona.get("EDAD", "No especificada")
+            print(f"Integrante {i} - Edad: {edad}")
 
 
 #--------------------V0 de la funcion-----------------------------
@@ -269,7 +279,80 @@ def escribir_duidado_por_hallazgos_en_celdas(
     anexar_texto(hoja, celdas[3], respuesta_hallazgos[3], ajustar_altura=False)
 
 
+#------------------funcion para añadir celdas cuidado por curso de vida---------------
+from typing import List, Tuple
 
+def rellenar_celdas_integrantes(
+    hoja: Worksheet,
+    tuplas: List[Tuple[str, int, str, str, str, str]],
+    ajustar_altura=True,
+) -> None:
+    """
+    Rellena hasta 10 filas con información de tuplas. 
+    Ajusta la altura de la fila SOLO según la longitud del campo de la columna 'G' (índice 2 de la tupla).
+
+    :param hoja: Hoja de cálculo de openpyxl.
+    :param tuplas: Lista de tuplas con 6 valores.
+    :param ajustar_altura: Si se ajusta la altura (solo usando el campo G).
+    :param ancho_estimado: Ancho estimado para calcular altura.
+    """
+    columnas = ["C", "F", "G", "L", "U", "V"]
+    fila_inicial = 44
+    max_filas = 10
+
+    for i, datos in enumerate(tuplas[:max_filas]):
+        fila = fila_inicial + i
+        for idx, (col, valor) in enumerate(zip(columnas, datos)):
+            ref = f"{col}{fila}"
+            # Ajustamos altura solo si estamos en la columna G (índice 2)
+            if idx == 2:
+                anexar_texto(
+                    hoja,
+                    ref,
+                    str(valor),
+                    ajustar_altura=ajustar_altura,
+                    ancho_estimado=30)
+            else:
+                anexar_texto(
+                    hoja,
+                    ref,
+                    str(valor),
+                    ajustar_altura=False  # No ajustar altura para otras columnas
+                )
+
+'''
+from typing import List, Tuple
+
+
+def rellenar_celdas_integrantes(
+    hoja,
+    tuplas: List[Tuple[str, int, str, str, str, str]],
+
+) -> None:
+    """
+    Rellena hasta 10 filas en la hoja de Excel con la información de la lista de tuplas.
+    Usa la función 'anexar_texto' para permitir control del texto y altura.
+
+    :param hoja: Hoja de cálculo de openpyxl
+    :param tuplas: Lista de tuplas con datos (nombre, edad, hallazgo, compromiso, logro trazador, logro intermedio)
+    :param ajustar_altura: Si se desea ajustar la altura de las filas automáticamente.
+    :param ancho_estimado: Ancho estimado para calcular la altura de la celda.
+    """
+    columnas = ["C", "F", "G", "L", "U", "V"]
+    fila_inicial = 44
+    max_filas = 10
+
+    for i, datos in enumerate(tuplas[:max_filas]):
+        fila = fila_inicial + i
+        for col, valor in zip(columnas, datos):
+            ref = f"{col}{fila}"
+            anexar_texto(
+                hoja,
+                ref,
+                str(valor),
+                
+            )
+'''
 
 
 #if __name__ == "__main__":

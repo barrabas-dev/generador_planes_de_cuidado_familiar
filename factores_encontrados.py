@@ -138,8 +138,125 @@ def generar_textos_factores(
         "\n\n".join(intermedios),
     )
 
-#-------------------------test-------------------------------------------
+#-----------------------------------------------------------------------
+from typing import List, Dict, Tuple, Any
+from db_restuestas import datos_por_ciclo_vida
 
+
+def generar_tuplas_integrantes(
+    integrantes: List[Dict[str, Any]],
+    datos_por_ciclo_vida: Dict[str, Dict[str, str]]
+) -> List[Tuple[str, int, str, str, str, str]]:
+    """
+    Genera una lista de tuplas con información personalizada por integrante,
+    según su edad y el ciclo de vida correspondiente.
+
+    Cada tupla contiene:
+    (nombre, edad, hallazgo_con_ciclo, compromiso, logro_trazador, logro_intermedio)
+    """
+
+    def normalizar_edad(edad) -> int:
+        try:
+            return int(edad)
+        except (ValueError, TypeError):
+            return -1  # Edad inválida
+
+    def determinar_ciclo(edad: int) -> str:
+        if 0 <= edad <= 5:
+            return "0 a 5"
+        elif 6 <= edad <= 11:
+            return "6 a 11"
+        elif 12 <= edad <= 17:
+            return "12 a 17"
+        elif 18 <= edad <= 28:
+            return "18 a 28"
+        elif 29 <= edad <= 59:
+            return "29 a 59"
+        elif edad >= 60:
+            return ">60"
+        else:
+            return "desconocido"
+
+    resultado: List[Tuple[str, int, str, str, str, str]] = []
+
+    for persona in integrantes:
+        nombre = persona.get("NOMBRE", "Sin nombre")
+        edad_str = persona.get("EDAD", "")
+        edad = normalizar_edad(edad_str)
+        ciclo_clave = determinar_ciclo(edad)
+
+        if ciclo_clave in datos_por_ciclo_vida:
+            datos_ciclo = datos_por_ciclo_vida[ciclo_clave]
+            ciclo = datos_ciclo["ciclo"]
+            hallazgo = f"{ciclo}: {datos_ciclo['hallazgo']}"
+            compromiso = datos_ciclo["compromiso"]
+            logro_trazador = datos_ciclo["logro_trazador"]
+            logro_intermedio = datos_ciclo["logro_intermedio"]
+
+            resultado.append((nombre, edad, hallazgo, compromiso, logro_trazador, logro_intermedio))
+        else:
+            print(f"⚠️ Edad inválida o fuera de rango para {nombre}: {edad_str}")
+
+    return resultado
+
+
+
+#-------------------------test-------------------------------------
+
+def main():
+    
+    try:
+        integrantes = [
+            {
+                "HOGAR": "H0124",
+                "NOMBRE": "Ana victoria daza gelvez",
+                "TIPO DE ID": "C.C",
+                "NUMERO DE IDENTIFICACIÓN": "27877132",
+                "GENERO": "femenino",
+                "EDAD": "73",
+                "EPS": "COOSALUD",
+                "REGIMEN": "SUBSIDIADO",
+                "FECHA DE NACIMIENTO": "1951-11-29 00:00:00",
+                "ESTADO CIVIL": "soltera",
+                "ESCOLARIDAD": "",
+                "OCUPACION": "",
+               
+            },
+            {
+                "HOGAR": "H0124",
+                "NOMBRE": "Gladys  mariela rozo gafaro",
+                "TIPO DE ID": "C.C",
+                "NUMERO DE IDENTIFICACIÓN": "27737835",
+                "GENERO": "femenino",
+                "EDAD": "54",
+                "EPS": "COOSALUD",
+                "REGIMEN": "SUBSIDIADO",
+                "FECHA DE NACIMIENTO": "1970-12-07 00:00:00",
+                "ESTADO CIVIL": "soltera",
+                "ESCOLARIDAD": "",
+                "OCUPACION": "",
+            
+            }
+        ]
+    
+        tuplas = generar_tuplas_integrantes(integrantes, datos_por_ciclo_vida)
+
+        for t in tuplas:
+            print(t)
+       
+    except ValueError as e:
+        # Manejo de errores: entrada inválida o datos incompletos
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+#----------------------------------------------
+'''
 def main():
     
     try:
@@ -194,7 +311,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-
+'''
 #-----------------------------------------------------------------------------------------
 '''   
 def main():

@@ -185,3 +185,68 @@ factores_dict: Dict[str, Dict[str, str]] = {
      
 }
 
+#--------------Diccionario con los hallazgos, compromisos y logros por curso de edad------------------------------------
+
+datos_por_ciclo_vida: Dict[str, Dict[str, str]] = {
+
+    "0 a 5": {
+        "ciclo": "PRIMERA INFANCIA",
+        "hallazgo": (
+            "Se reconocen esfuerzos familiares por atender las necesidades del niño, como la lactancia y el seguimiento de controles. "
+            "Sin embargo, persisten prácticas alimentarias mejorables y asistencia irregular a controles. En el hogar, hay condiciones que podrían ajustarse para fortalecer la seguridad y la higiene, especialmente en lo respiratorio y digestivo."
+        ),
+        "compromiso": "Garantizar alimentación adecuada, asistir a controles, mejorar la seguridad del hogar y fortalecer prácticas de higiene.",
+        "logro_trazador": "Cumplimiento del 90% de los controles de crecimiento y vacunación en 6 meses con registros clínicos actualizados.",
+        "logro_intermedio": "Evaluación domiciliaria y mejoras mínimas en seguridad e higiene en un plazo de 90 días."
+    },
+    "6 a 11": {
+        "ciclo": "INFANCIA",
+        "hallazgo": (
+            "Se evidencia una disposición familiar hacia el cuidado y la higiene, aunque con oportunidades para mejorar la regularidad y supervisión. "
+            "Se observa consumo moderado de alimentos procesados y uso frecuente de pantallas, así como variabilidad en la actividad física. Estos factores pueden afectar el bienestar y el rendimiento escolar del niño."
+        ),
+        "compromiso": "Promover alimentación saludable, aumentar actividad física y supervisar hábitos de higiene.",
+        "logro_trazador": "Rutinas saludables 5 días por semana con evidencia en controles o registros familiares en 6 meses.",
+        "logro_intermedio": "Sesión educativa sobre alimentación, higiene y actividad física en los primeros 90 días."
+    },
+    "12 a 17": {
+        "ciclo": "ADOLESCENCIA",
+        "hallazgo": (
+            "Se aprecian vínculos familiares presentes y disposición a mejorar la convivencia, aunque se identifican dificultades en la comunicación emocional. "
+            "Puede haber exposición a riesgos como sustancias psicoactivas y hábitos irregulares de alimentación, sueño o autocuidado, aspectos que pueden optimizarse con acompañamiento."
+        ),
+        "compromiso": "Mejorar la comunicación, prevenir conductas de riesgo y establecer rutinas saludables.",
+        "logro_trazador": "Mejora en comunicación y reducción de riesgos en evaluación psicosocial o médica en 6 meses.",
+        "logro_intermedio": "Sesión grupal o familiar sobre comunicación, autocuidado y prevención en 90 días."
+    },
+    "18 a 28": {
+        "ciclo": "JUVENTUD",
+        "hallazgo": (
+            "Se evidencia interés por el autocuidado y autonomía en muchos jóvenes, aunque persisten hábitos alimentarios irregulares y niveles variables de actividad física. "
+            "La participación en controles de salud es ocasional, y pueden reforzarse el manejo del estrés y la integración en redes familiares o comunitarias de apoyo."
+        ),
+        "compromiso": "Mejorar alimentación, aumentar actividad física, asistir a controles y fortalecer redes de apoyo.",
+        "logro_trazador": "Controles regulares y adopción de hábitos saludables documentados por 6 meses.",
+        "logro_intermedio": "Participación en actividades de salud y agendamiento de controles en 90 días."
+    },
+    "29 a 59": {
+        "ciclo": "ADULTEZ",
+        "hallazgo": (
+            "Muchas personas en esta etapa muestran compromiso con su familia y trabajo, aunque tienden a postergar su bienestar personal. "
+            "Son comunes estilos de vida sedentarios, alimentación poco equilibrada y limitada participación en controles médicos, lo que puede afectar la salud emocional y familiar."
+        ),
+        "compromiso": "Reducir sedentarismo, mejorar la dieta, asistir a controles y promover el bienestar emocional.",
+        "logro_trazador": "Estilo de vida activo y alimentación adecuada, reflejado en evaluaciones y registros en 6 meses.",
+        "logro_intermedio": "Asistencia a control médico y actividad de bienestar emocional dentro de 90 días."
+    },
+    ">60": {
+        "ciclo": "VEJEZ",
+        "hallazgo": (
+            "En esta etapa, muchas personas conservan su funcionalidad con el apoyo de su familia. Aun así, se presentan algunas limitaciones en la movilidad, hábitos alimentarios que pueden optimizarse y menor participación social. "
+            "El acceso a servicios de salud puede ser intermitente, por lo que fortalecer el acompañamiento familiar y comunitario es clave."
+        ),
+        "compromiso": "Promover movilidad, mejorar alimentación, asegurar acceso a salud y fortalecer acompañamiento social y familiar.",
+        "logro_trazador": "Mejora o mantenimiento de funcionalidad y bienestar reflejado en controles y valoración familiar en 6 meses.",
+        "logro_intermedio": "Plan de actividades físicas y acompañamiento con seguimiento familiar en 90 días."
+    }
+}
