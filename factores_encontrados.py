@@ -199,10 +199,62 @@ def generar_tuplas_integrantes(
 
     return resultado
 
+#----------funcion para generar textos de sobrecarga del cuidador
 
+from typing import Dict, Tuple
+from db_restuestas import sobrecarga_cuidador
+
+def generar_texto_sobrecarga_unico(datos_nucleo: Dict[str, Dict]) -> Tuple[str, str, str, str]:
+    """
+    Genera una tupla de textos (hallazgo, compromiso, logro trazador, logro intermedio)
+    basada únicamente en el valor booleano del factor 'SOBRECARGA DE CUIDADOR'.
+
+    :param datos_nucleo: Diccionario del núcleo familiar con la clave 'factores' que incluye el factor de sobrecarga.
+    :return: Tupla de textos (hallazgo, compromiso, logro trazador, logro intermedio).
+    """
+    # Extrae el valor booleano del factor
+    factores = datos_nucleo.get("factores", {})
+    valor_sobrecarga = factores.get("SOBRECARGA DE CUIDADOR")
+
+    # Usa el diccionario correspondiente
+    info = sobrecarga_cuidador.get(valor_sobrecarga)
+
+    # Si no hay valor válido, retorna textos vacíos
+    if not info:
+        return ("", "", "", "")
+
+    return (
+        info["hallazgo"],
+        info["compromiso"],
+        info["logro_trazador"],
+        info["logro_intermedio"]
+    )
 
 #-------------------------test-------------------------------------
+def main():
+    
+    try:
+        nucleo_ejemplo = {
+            "factores": {
+                 "SOBRECARGA DE CUIDADOR": True
+                }
+            }
 
+        resultado = generar_texto_sobrecarga_unico(nucleo_ejemplo)
+        print(resultado)
+
+    
+    except ValueError as e:
+        # Manejo de errores: entrada inválida o datos incompletos
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+'''
 def main():
     
     try:
@@ -253,7 +305,7 @@ if __name__ == "__main__":
     main()
 
 
-
+'''
 
 #----------------------------------------------
 '''

@@ -250,3 +250,38 @@ datos_por_ciclo_vida: Dict[str, Dict[str, str]] = {
         "logro_intermedio": "Plan de actividades físicas y acompañamiento con seguimiento familiar en 90 días."
     }
 }
+
+#-------Diccionario de sobrecarga del cuidador----------
+
+sobrecarga_cuidador = {
+    True: {
+        "hallazgo": "SI TIENE SOBRECARGA EL CUIDADOR",
+        "compromiso": (
+            "Identificar y monitorear regularmente los signos de fatiga física, emocional y mental del cuidador principal mediante herramientas clínicas, "
+            "entrevistas personales y apoyo interdisciplinario, fomentando el acompañamiento familiar."
+        ),
+        "logro_trazador": (
+            "Sensibilizar al núcleo familiar y al propio cuidador sobre los efectos de la sobrecarga a través de talleres y sesiones informativas "
+            "durante los primeros seis meses del plan de intervención centrado en el bienestar del cuidador."
+        ),
+        "logro_intermedio": (
+            "Documentar y analizar la distribución de responsabilidades de cuidado entre el cuidador principal y otros miembros de la familia, "
+            "priorizando el equilibrio de cargas desde el inicio del proceso."
+        )
+    },
+    False: {
+        "hallazgo": "NO TIENE SOBRECARGA EL CUIDADOR",
+        "compromiso": (
+            "Promover el mantenimiento del equilibrio emocional, físico y social del cuidador a través de espacios de autocuidado, pausas activas y dinámicas "
+            "familiares colaborativas que refuercen su bienestar integral."
+        ),
+        "logro_trazador": (
+            "Fortalecer el conocimiento del cuidador y la familia sobre estrategias de prevención de la sobrecarga mediante actividades educativas continuas "
+            "dentro del primer semestre del plan familiar de salud."
+        ),
+        "logro_intermedio": (
+            "Establecer una línea base del tiempo y tipo de actividades que realiza el cuidador, con el fin de preservar una distribución saludable "
+            "de sus funciones sin generar desgaste."
+        )
+    }
+}

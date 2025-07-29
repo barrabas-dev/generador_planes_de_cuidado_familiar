@@ -490,3 +490,15 @@ datos_por_ciclo_vida: Dict[str, Dict[str, str]] = {
     }
 }
 }
+
+{9: Ayudame a crear una funcion que recibira una variable con la siguiente estructura (List[Tuple[str, int, str, str, str, str]]:)
+    Esta funcion se encargara de rellenar una serie de celdas que estan en el mismo orden de la lista de tuplas.
+    celdas = "C44", "F44", "G44", "L44", "U44", "V44".
+
+    La lista de tuplas contendra tuplas que pueden variar segun el nucleo familiar.
+
+    EL area en la hoja de calculo asignada para rellenar cuenta con 10 filas en total.
+
+    La funcion debe asignar una tupla por fila
+     
+}

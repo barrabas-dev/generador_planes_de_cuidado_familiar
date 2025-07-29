@@ -78,6 +78,11 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         #for t in tuplas: #ciclo para ver en consula si funciona la funcion
             #print(t)
 
+        # llenar celdas sobre carga del cuidador
+
+        from factores_encontrados import generar_texto_sobrecarga_unico
+        respuesta_cuidador = generar_texto_sobrecarga_unico(plan_info)
+        escribir_cuidador_en_celdas(hoja, celdas=("C56", "I56", "U56", "V56"), respuesta_cuidador=respuesta_cuidador)
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
         if integrantes:
@@ -320,39 +325,27 @@ def rellenar_celdas_integrantes(
                     ajustar_altura=False  # No ajustar altura para otras columnas
                 )
 
-'''
-from typing import List, Tuple
+#---Rellenar sobre carga del cuidador--------------------
 
 
-def rellenar_celdas_integrantes(
+def escribir_cuidador_en_celdas(
     hoja,
-    tuplas: List[Tuple[str, int, str, str, str, str]],
-
+    celdas: Tuple[str, str, str, str],
+    respuesta_cuidador: Tuple[str, str, str, str]
 ) -> None:
     """
-    Rellena hasta 10 filas en la hoja de Excel con la información de la lista de tuplas.
-    Usa la función 'anexar_texto' para permitir control del texto y altura.
+    Escribe los textos relacionados con la sobrecarga del cuidador en celdas específicas.
 
-    :param hoja: Hoja de cálculo de openpyxl
-    :param tuplas: Lista de tuplas con datos (nombre, edad, hallazgo, compromiso, logro trazador, logro intermedio)
-    :param ajustar_altura: Si se desea ajustar la altura de las filas automáticamente.
-    :param ancho_estimado: Ancho estimado para calcular la altura de la celda.
+    Parámetros:
+        hoja (Worksheet): Hoja de cálculo de openpyxl donde se escribirá.
+        celdas (Tuple[str, str, str, str]): Coordenadas de celdas como strings (ej: "B7", "D9", ...).
+        respuesta_cuidador (Tuple[str, str, str, str]): Tupla con hallazgo, compromiso, logro trazador e intermedio.
     """
-    columnas = ["C", "F", "G", "L", "U", "V"]
-    fila_inicial = 44
-    max_filas = 10
+    anexar_texto(hoja, celdas[0], respuesta_cuidador[0], ajustar_altura=False)
+    anexar_texto(hoja, celdas[1], respuesta_cuidador[1], ajustar_altura=False)
+    anexar_texto(hoja, celdas[2], respuesta_cuidador[2], ajustar_altura=False)
+    anexar_texto(hoja, celdas[3], respuesta_cuidador[3], ancho_estimado=25)
 
-    for i, datos in enumerate(tuplas[:max_filas]):
-        fila = fila_inicial + i
-        for col, valor in zip(columnas, datos):
-            ref = f"{col}{fila}"
-            anexar_texto(
-                hoja,
-                ref,
-                str(valor),
-                
-            )
-'''
 
 
 #if __name__ == "__main__":
