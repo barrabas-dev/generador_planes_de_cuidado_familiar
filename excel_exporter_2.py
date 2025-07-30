@@ -50,12 +50,13 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         # Llenar información en la hoja
         anexar_texto(hoja, "X8", nucleo_id, ajustar_altura=False)
         anexar_texto(hoja, "B8", "Toledo", ajustar_altura=False)
-        anexar_texto(hoja, "H8", "Santa Lucia", ajustar_altura=False) #para modificar barrio o vereda
+        anexar_texto(hoja, "H8", "Centenario", ajustar_altura=False) #para modificar barrio o vereda
         anexar_fecha_en_celdas(hoja, "C10", fecha_tupla)
         anexar_texto(hoja, "B11", "EBAS GRUPO 3 URBANO", ajustar_altura=False)
         anexar_texto(hoja, "C16", resultado_apgar, ajustar_altura=False)
         anexar_texto(hoja,"E17", acuerdo_apgar, ancho_estimado=70)
         anexar_texto(hoja, "N17", analisis_apgar)
+        anexar_texto(hoja, "E75", fecha_tupla)
 
         # Escribir fortalezas en las celdas especificadas
         celdas_destino_fortalezas = ("B30", "B32", "M30", "M32")
@@ -100,6 +101,17 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         respuesta_red_apoyo = generar_texto_red_apoyo_unico(plan_info)
         escribir_cuidador_en_celdas(hoja, celdas=("C69", "I69", "U69", "V69"), respuesta_cuidador=respuesta_red_apoyo)
         
+        #llenar parte final plan de cuidado---------------
+        from db_restuestas import DICT_FACTORES_CUIDADO
+        from factores_encontrados import generar_textos_cuidado_familiar
+        respuesta_plan_cuidado = generar_textos_cuidado_familiar(plan_info["factores"], DICT_FACTORES_CUIDADO)
+        escribir_plan_cuidado_en_celdas(hoja, ("H76", "U76"), respuesta_hallazgos=respuesta_plan_cuidado)
+
+        #llenar celda plan de mejora seguimiento
+
+        texto_seguimiento = "En el marco de los Equipos Básicos de Salud (EBS), las estrategias de seguimiento en las visitas domiciliarias incluyen la verificación de la adherencia a tratamientos médicos y recomendaciones de salud. Se prioriza la educación continua a la familia sobre autocuidado, signos de alarma y estilos de vida saludables. Además, se realiza monitoreo de condiciones crónicas, evaluación del entorno y actualización de la ficha familiar. Se establecen alertas para casos de riesgo y se articulan acciones con otros profesionales del equipo. Estas visitas buscan garantizar la continuidad del cuidado y mejorar la calidad de vida familiar."
+
+        anexar_texto(hoja, "N76", texto_seguimiento)
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
         if integrantes:
@@ -363,7 +375,26 @@ def escribir_cuidador_en_celdas(
     anexar_texto(hoja, celdas[2], respuesta_cuidador[2], ajustar_altura=False)
     anexar_texto(hoja, celdas[3], respuesta_cuidador[3], ancho_estimado=25)
 
+#---------Rellenar plan de cuidado-------------------
 
+def escribir_plan_cuidado_en_celdas(
+    hoja,
+    celdas: Tuple[str, str],
+    respuesta_hallazgos: Tuple[str, str]
+) -> None:
+    """
+    Escribe los textos de hallazgos/implementaciones y cierres en celdas específicas.
+
+    Parámetros:
+        hoja (Worksheet): Hoja de cálculo de openpyxl donde se escribirá.
+        celdas (Tuple[str, str]): Coordenadas de las dos celdas destino (ej: "B7", "D9").
+        respuesta_hallazgos (Tuple[str, str]): Tupla con (hallazgos + implementaciones, cierres).
+    """
+    # Hallazgos e implementaciones con ajuste de altura y ancho
+    anexar_texto(hoja, celdas[0], respuesta_hallazgos[0], ancho_estimado=30)
+
+    # Cierres, sin ajuste de altura
+    anexar_texto(hoja, celdas[1], respuesta_hallazgos[1], ajustar_altura=False)
 
 #if __name__ == "__main__":
 

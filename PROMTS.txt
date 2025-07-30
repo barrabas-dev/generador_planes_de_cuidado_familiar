@@ -507,3 +507,82 @@ datos_por_ciclo_vida: Dict[str, Dict[str, str]] = {
     basada únicamente en los valores booleano del factor "ACTIVIDADES DEPORTIVAS COMUNITARIAS", "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS".
 
  }
+
+ {
+    Crea una Funcion que se encargara de generar una tupla con dos elementos.
+
+    el primero elemento contendra el valor contenido en "hallazgos" mas el valor contenido en "implementacion".
+
+    el segundo elemento contendra el valor contenido en "cierre".
+
+    la funcion debera tener en cuenta para generar los textos. los factores encontrados por nucleo,tendra en cuenta solo los que esten asignados como true:
+
+    "COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES",
+    "INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD",
+    "RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO",
+    "ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES",
+    "RIESGO DE MAL NUTRICIÓN",
+    
+    los siguientes factores se deberan asumir al contrario, generara los textos solo con los factores marcados como false:
+    
+    "ACTIVIDADES DEPORTIVAS COMUNITARIAS",
+    "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS",
+    "RED DE APOYO COMUNITARIO",
+
+    El diccionario que se usara para generar los textos es el siguiente:
+
+    DICT_FACTORES_CUIDADO = {
+    "COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES": {
+        "hallazgo": "Presencia de patrones de comunicación no asertiva e inadecuado uso de dispositivos electrónicos, lo que interfiere en las dinámicas familiares y limita la calidad de las interacciones interpersonales.",
+        "implementacion": "Se implementarán encuentros educativos durante las visitas domiciliarias. Se promoverán prácticas de comunicación respetuosa y escucha activa entre los miembros de la familia. Además, se orientará sobre el uso equilibrado de la tecnología y la importancia de compartir tiempos sin pantallas. Se fomentará el fortalecimiento de vínculos afectivos y espacios de diálogo familiar. Todo con enfoque participativo y adaptado al contexto familiar.",
+        "cierre": "Se considera finalizado el proceso cuando se evidencia una disminución de los conflictos interpersonales y una mejora en la comunicación emocional asertiva. Asimismo, se observa continuidad en las prácticas saludables adoptadas, incluyendo avances en parámetros de salud básica. El cierre también se sustenta en la apropiación de estrategias de autorregulación emocional y digital, mantenidas en el tiempo. Finalmente, se reconoce una mayor estabilidad emocional y una actitud proactiva para solicitar apoyo profesional cuando sea necesario."
+    },
+    "INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD": {
+        "hallazgo": "Baja adherencia a los servicios integrales de atención en salud en el marco de la Ruta de Promoción y Mantenimiento de la Salud, lo que limita la detección temprana, la intervención oportuna y la continuidad del cuidado.",
+        "implementacion": "Se realizarán visitas domiciliarias con educación en salud adaptada a la familia. Se explicará la importancia de los controles, vacunación y prevención de enfermedades. Se identificarán barreras y se gestionarán apoyos para facilitar el acceso a los servicios. La familia será parte activa del proceso, promoviendo su corresponsabilidad. Todo se hará con enfoque comunitario y culturalmente pertinente.",
+        "cierre": "Se considera cerrado cuando la familia demuestra mejoras sostenidas en la comunicación, con prácticas más asertivas y mayor disposición al diálogo respetuoso. Se observa una reducción del uso inadecuado de dispositivos electrónicos y un aumento en las interacciones presenciales de calidad. Además, la familia reconoce la importancia del equilibrio entre tecnología y convivencia. Estos cambios se evidencian de forma estable durante las visitas de seguimiento."
+    },
+    "RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO": {
+        "hallazgo": "Riesgo de aislamiento social y deterioro progresivo de la salud física y mental, asociado a la ausencia de redes de apoyo familiar y a la inestabilidad en prácticas regulares de autocuidado.",
+        "implementacion": "Se promoverá la reconstrucción de redes de apoyo a través del acompañamiento psicosocial en visitas domiciliarias. Se fortalecerán rutinas de autocuidado mediante orientación personalizada y seguimiento periódico. Además, se fomentará la vinculación con actividades comunitarias y servicios disponibles en el territorio. La intervención buscará mejorar la estabilidad emocional y la participación activa en su proceso de cuidado. Todo se realizará con enfoque humanizado, familiar y comunitario.",
+        "cierre": "Se considera cerrado cuando se evidencia una mayor participación del individuo en espacios comunitarios y sociales, así como la activación de redes de apoyo formales o informales. Se observan mejoras en las rutinas de autocuidado y un compromiso sostenido con el seguimiento de su salud física y mental. Además, se identifica mayor autonomía, estabilidad emocional y disposición para buscar ayuda oportuna. Estos avances se mantienen de forma constante durante el acompañamiento."
+    },
+    "ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES": {
+        "hallazgo": "Presencia de procesos de envejecimiento con comorbilidades crónicas y manifestaciones emocionales asociadas a la transición del ciclo vital.",
+        "implementacion": "Se implementará un plan de cuidado centrado en el acompañamiento integral durante las visitas domiciliarias. Se fortalecerá el autocuidado y la adherencia al tratamiento, así como la expresión emocional y adaptación a los cambios del ciclo vital. Se promoverá la participación en redes de apoyo comunitario y espacios de socialización. Además, se articulará con programas de atención al adulto mayor para garantizar seguimiento continuo. Todo con enfoque biopsicosocial y centrado en la dignidad del envejecimiento.",
+        "cierre": "Se considera cerrado cuando la persona mayor muestra adherencia al tratamiento de sus comorbilidades, estabilidad en su estado de salud y participación activa en su proceso de autocuidado. Se evidencia aceptación progresiva de los cambios propios del ciclo vital y manejo adecuado de las emociones asociadas. Además, cuenta con acompañamiento familiar o comunitario que respalda su bienestar integral. Estos logros se mantienen durante las visitas de seguimiento y no requieren intervenciones adicionales intensivas."
+    },
+    "RIESGO DE MAL NUTRICIÓN": {
+        "hallazgo": "Riesgo nutricional en diferentes grupos etarios, con manifestaciones de malnutrición por exceso o por déficit, asociado a prácticas alimentarias inadecuadas y desinformación nutricional.",
+        "implementacion": "Se desarrollarán intervenciones educativas durante las visitas domiciliarias, enfocadas en mejorar las prácticas alimentarias y corregir desinformación nutricional. Se brindarán recomendaciones adaptadas según la edad, condición de salud y contexto familiar. Además, se promoverá el acceso a alimentos saludables y se articulará con servicios de apoyo nutricional comunitario. El seguimiento será continuo y orientado a fortalecer hábitos sostenibles. Todo con enfoque preventivo, familiar y culturalmente pertinente.",
+        "cierre": "Se considera cerrado cuando los integrantes de la familia adoptan prácticas alimentarias más equilibradas, ajustadas a su grupo etario y condición de salud. Se observa mejoría en los indicadores nutricionales, ya sea por la recuperación de peso saludable o la reducción del exceso. Además, demuestran comprensión de las recomendaciones brindadas y aplican de forma autónoma hábitos de alimentación adecuados. Estos cambios se sostienen en el tiempo y se refuerzan en cada seguimiento."
+    },
+    "ACTIVIDADES DEPORTIVAS COMUNITARIAS": {
+        "hallazgo": "No cuenta con actividades deportivas comunitarias.",
+        "implementacion": "Se promoverá la activación de espacios locales para la práctica de actividad física mediante el trabajo conjunto con líderes comunitarios y entidades territoriales. Durante las visitas domiciliarias se orientará a las familias sobre la importancia del ejercicio regular para la salud física y mental. Se sugerirán rutinas sencillas que puedan realizarse en el hogar o en espacios abiertos del barrio. Además, se fomentará la organización de grupos comunitarios para caminatas, juegos o pausas activas. Todo con enfoque participativo y de promoción de la salud.",
+        "cierre": "Se considera cerrado cuando la familia o sus miembros participan activamente en espacios comunitarios de actividad física o han incorporado rutinas de ejercicio en su entorno cercano. Se evidencia comprensión de los beneficios del movimiento regular para la salud y se mantiene una práctica constante, adecuada a la edad y condición física. Además, se fortalecen vínculos con la comunidad a través de estas actividades. Estos cambios se sostienen durante las visitas de seguimiento."
+    },
+    "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS": {
+        "hallazgo": "No cuenta con actividades lúdicas y culturales comunitarias.",
+        "implementacion": "Se impulsará la gestión y promoción de espacios participativos en articulación con líderes locales, instituciones educativas y entidades culturales. Durante las visitas domiciliarias se motivará a las familias a participar en actividades recreativas que fortalezcan la identidad, la convivencia y el bienestar emocional. Se propondrán iniciativas sencillas como encuentros barriales, juegos tradicionales o talleres artísticos. Además, se promoverá la integración intergeneracional como herramienta de cohesión social. Todo con enfoque comunitario, participativo y culturalmente pertinente.",
+        "cierre": "Se considera cerrado cuando la familia participa de manera activa en actividades lúdicas o culturales disponibles en la comunidad, o ha desarrollado espacios recreativos propios en su entorno. Se reconoce el valor de estas prácticas para fortalecer los lazos familiares, el bienestar emocional y la integración social. Además, se promueve la continuidad de estas acciones como parte de su dinámica habitual. Estos avances se mantienen de forma estable en los seguimientos realizados."
+    },
+    "RED DE APOYO COMUNITARIO": {
+        "hallazgo": "No cuenta con red de apoyo comunitario.",
+        "implementacion": "Se promoverá la identificación y fortalecimiento de vínculos con vecinos, líderes locales y actores sociales del territorio. Durante las visitas domiciliarias se orientará a la familia sobre la importancia del apoyo mutuo y la participación en espacios comunitarios. Se fomentará la vinculación con grupos organizados, comités locales o iniciativas solidarias existentes. Además, se articulará con entidades e instituciones que favorezcan la construcción de redes de cuidado. Todo con enfoque comunitario, participativo y sostenible.",
+        "cierre": "Se considera cerrado cuando la familia ha logrado establecer vínculos con redes de apoyo comunitario formales o informales, como vecinos, grupos locales o instituciones del territorio. Se evidencia mayor participación en espacios comunitarios y disposición para solicitar ayuda cuando es necesario. Además, se fortalecen los lazos de solidaridad y corresponsabilidad en su entorno. Estos cambios se mantienen y se reafirman durante las visitas de seguimiento."
+    }
+}
+
+la siguiente es un ejemplo de la estrutura de los factores contenidos en el nucleo familia es la siguiente:
+
+'factores': {
+                'SOBRECARGA DE CUIDADOR': True,
+                'RED DE APOYO COMUNITARIO': False
+            }
+ 
+ 
+ ** Necesito el codigo bien comentado para entenderlo mejor, ya que se usara en un proyecto profesional.
+ 
+ 
+ }

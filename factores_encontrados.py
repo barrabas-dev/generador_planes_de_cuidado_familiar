@@ -329,23 +329,105 @@ def generar_texto_red_apoyo_unico(datos_nucleo: Dict[str, Dict]) -> Tuple[str, s
         info["logro_intermedio"]
     )
 
+#----------Funcion para plan de mejora-----------------------------
+
+from typing import Tuple, Dict
+
+# Listas de factores que se procesan según valor True o False
+FACTORES_POR_TRUE = [
+    "COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES",
+    "INASISTENCIA A SERVICIOS DE SALUD DENTRO DEL MARCO DE LOS SERVICIOS DE LA RUTA DE PROMOCION Y MANTENIMIENTO DE LA SALUD",
+    "RIESGO DE AISLAMIENTO SOCIAL Y DETERIORO EN SU SALUD FÍSICA Y MENTAL DEBIDO A LA FALTA DE APOYO FAMILIAR CONSTANTE Y HÁBITOS IRREGULARES DE AUTOCUIDADO",
+    "ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES",
+    "RIESGO DE MAL NUTRICIÓN"
+]
+
+FACTORES_POR_FALSE = [
+    "ACTIVIDADES DEPORTIVAS COMUNITARIAS",
+    "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS",
+    "RED DE APOYO COMUNITARIO"
+]
+
+# Textos predeterminados actualizados
+TEXTO_POR_DEFECTO = (
+    "A través de visitas domiciliarias y actividades educativas, se promoverán prácticas de autocuidado, "
+    "estilos de vida saludables y comunicación asertiva. Se brindará información sobre prevención de enfermedades prevalentes, "
+    "salud mental, alimentación balanceada y uso adecuado de servicios de salud. Además, se incentivará la participación en "
+    "espacios comunitarios y se reforzará la corresponsabilidad en el mantenimiento del bienestar familiar. Todo con enfoque "
+    "preventivo, participativo y culturalmente pertinente."
+)
+
+CIERRE_POR_DEFECTO = (
+    "Se considera cerrado cuando la familia demuestra continuidad en las prácticas de autocuidado y mantiene hábitos saludables "
+    "de forma autónoma. Se evidencia apropiación del conocimiento brindado durante las intervenciones educativas y disposición "
+    "para aplicar medidas preventivas en su vida diaria. Además, la familia participa activamente en espacios comunitarios y "
+    "reconoce los servicios de salud como aliados en el mantenimiento de su bienestar. Estos avances se mantienen estables en "
+    "las visitas de seguimiento. El proceso se cierra con énfasis en la consolidación de los factores protectores identificados."
+)
+
+
+
+def generar_textos_cuidado_familiar(
+    factores_nucleo: Dict[str, bool], 
+    dict_factores: Dict[str, Dict[str, str]]
+) -> Tuple[str, str]:
+    """
+    Genera una tupla con dos textos:
+    - El primero incluye hallazgos e implementaciones con títulos y saltos de línea.
+    - El segundo incluye los cierres con saltos de línea.
+
+    Solo se consideran:
+    - Factores en FACTORES_POR_TRUE con valor True
+    - Factores en FACTORES_POR_FALSE con valor False
+
+    :param factores_nucleo: Diccionario con los factores del núcleo y su estado (True o False)
+    :param dict_factores: Diccionario maestro con los textos por cada factor
+    :return: Una tupla con (texto_hallazgos + implementaciones, texto_cierres)
+    """
+
+    hallazgos = []
+    implementaciones = []
+    cierres = []
+
+    for factor, valor in factores_nucleo.items():
+        if (factor in FACTORES_POR_TRUE and valor is True) or \
+           (factor in FACTORES_POR_FALSE and valor is False):
+            datos = dict_factores.get(factor)
+            if datos:
+                hallazgos.append(datos['hallazgo'])
+                implementaciones.append(datos['implementacion'])
+                cierres.append(datos['cierre'])
+
+    if not hallazgos and not implementaciones:
+        return (TEXTO_POR_DEFECTO, CIERRE_POR_DEFECTO)
+    
+
+    texto_hallazgos = "Hallazgos identificados:\n" + "\n".join(hallazgos)
+    texto_implementaciones = "Implementaciones propuestas:\n" + "\n".join(implementaciones)
+    texto_cierre = "\n".join(cierres).strip()
+
+    #texto_hallazgo_implementacion = "\n\n".join([texto_hallazgos, texto_implementaciones]).strip()
+    texto_hallazgo_implementacion = f"{texto_hallazgos}\n\n{texto_implementaciones}".strip()
+
+    return (texto_hallazgo_implementacion, texto_cierre)
 
 #-------------------------test-------------------------------------
+from db_restuestas import DICT_FACTORES_CUIDADO
+
 def main():
     try:
-        datos_nucleo = {
-            'factores': {
-                "RED DE APOYO COMUNITARIO": True,
-                }
-        }
+        factores_nucleo = {
+                "COMUNICACION NO ASERTIVA, USO INADECUADO DE PANTALLAS LO CUAL DIFICULTA LAS INTERACCIONES FAMILIARES": True,
+                "RED DE APOYO COMUNITARIO": False,
+                "ACTIVIDADES DEPORTIVAS COMUNITARIAS": True,  # Este NO se toma
+                    "ENVEJECIMIENTO, ENFERMEDADES CRÓNICAS Y CAMBIOS EMOCIONALES": True}
 
-        # Usando el diccionario DICT_CUIDADO_ENTORNO definido antes
-        hallazgo, compromiso, trazador, intermedio = generar_texto_red_apoyo_unico(datos_nucleo)
+            # Llamada a la función
+        resultado = generar_textos_cuidado_familiar(factores_nucleo, DICT_FACTORES_CUIDADO)
 
-        print(hallazgo)
-        print(compromiso)
-        print(trazador)
-        print(intermedio)
+            # Resultado
+        print("Texto Hallazgos + Implementación:\n", resultado[0])
+        print("\nTexto Cierre:\n", resultado[1])
 
     
     except ValueError as e:
