@@ -502,3 +502,8 @@ datos_por_ciclo_vida: Dict[str, Dict[str, str]] = {
     La funcion debe asignar una tupla por fila
      
 }
+ {
+    ayudame a generar una funcion que generara una tupla con los textos (hallazgo, compromiso, logro trazador, logro intermedio)
+    basada únicamente en los valores booleano del factor "ACTIVIDADES DEPORTIVAS COMUNITARIAS", "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS".
+
+ }

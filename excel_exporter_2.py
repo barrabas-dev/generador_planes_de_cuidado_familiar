@@ -5,7 +5,7 @@ from openpyxl.cell import MergedCell
 from openpyxl.styles import Alignment
 from math import ceil
 from openpyxl.utils import get_column_letter, column_index_from_string
-from factores_encontrados import obtener_acuerdo_completo_apgar, obtener_fortalezas_apgar, generar_textos_factores
+from factores_encontrados import obtener_acuerdo_completo_apgar, obtener_fortalezas_apgar, generar_textos_factores, obtener_resultado_completo_apgar
 
 def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, plantilla_path: str, salida_dir: str):
     """
@@ -44,8 +44,8 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         # Obtener info del plan
         fecha_tupla = plan_info.get("fecha_visita")
         resultado_apgar = plan_info.get("resultado_apgar")
-        acuerdo_apgar = (obtener_acuerdo_completo_apgar(resultado_apgar) or "BOlO").strip()
-
+        acuerdo_apgar = (obtener_acuerdo_completo_apgar(resultado_apgar) or "").strip()
+        analisis_apgar = (obtener_resultado_completo_apgar(resultado_apgar) or "").strip()
 
         # Llenar información en la hoja
         anexar_texto(hoja, "X8", nucleo_id, ajustar_altura=False)
@@ -55,11 +55,13 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         anexar_texto(hoja, "B11", "EBAS GRUPO 3 URBANO", ajustar_altura=False)
         anexar_texto(hoja, "C16", resultado_apgar, ajustar_altura=False)
         anexar_texto(hoja,"E17", acuerdo_apgar, ancho_estimado=70)
+        anexar_texto(hoja, "N17", analisis_apgar)
 
         # Escribir fortalezas en las celdas especificadas
         celdas_destino_fortalezas = ("B30", "B32", "M30", "M32")
         fortalezas = obtener_fortalezas_apgar(resultado_apgar)
         escribir_fortalezas_en_celdas(hoja, celdas=celdas_destino_fortalezas, fortalezas=fortalezas)
+
 
         # Escribir respuestas por hallazgos cuidado en salud familiar
         from db_restuestas import factores_dict
@@ -83,6 +85,21 @@ def crear_planes_cuidado_familiares(dato_nucleos: dict, planes_nucleos: dict, pl
         from factores_encontrados import generar_texto_sobrecarga_unico
         respuesta_cuidador = generar_texto_sobrecarga_unico(plan_info)
         escribir_cuidador_en_celdas(hoja, celdas=("C56", "I56", "U56", "V56"), respuesta_cuidador=respuesta_cuidador)
+
+        #llenas celdas sobre actividades ludicas y deportivas--------------------
+        from db_restuestas import DICT_CUIDADO_ENTORNO
+        from factores_encontrados import generar_textos_cuidado_entorno
+
+        respuesta_entorno = generar_textos_cuidado_entorno(plan_info, DICT_CUIDADO_ENTORNO)
+        
+        escribir_cuidador_en_celdas(hoja, celdas=("C62", "I62", "U62", "V62"), respuesta_cuidador=respuesta_entorno)
+        
+        #llenar celdas cuidado en red-------------------
+
+        from factores_encontrados import generar_texto_red_apoyo_unico
+        respuesta_red_apoyo = generar_texto_red_apoyo_unico(plan_info)
+        escribir_cuidador_en_celdas(hoja, celdas=("C69", "I69", "U69", "V69"), respuesta_cuidador=respuesta_red_apoyo)
+        
 
         # Llenar nombre y datos de la primera persona del núcleo en B13
         if integrantes:

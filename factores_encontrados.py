@@ -24,6 +24,30 @@ def obtener_acuerdo_completo_apgar(resultado: str) -> Optional[str]:
     else:
         return None
     
+#------------------------------------------------------------------------------------------------
+
+from typing import Optional
+from db_restuestas import resultados_apgar
+
+def obtener_resultado_completo_apgar(resultado: str) -> Optional[str]:
+    """
+    Retorna un string estructurado con el título y el texto descriptivo del resultado APGAR.
+
+    Parámetros:
+        resultado (str): Resultado del APGAR como string ('17 A 20', '16 A 13', '12 A 10', '9 O MENOS').
+
+    Retorna:
+        str: Título seguido del contenido descriptivo, separados por doble salto de línea.
+        None: Si el resultado no es válido.
+    """
+    resultado_info = resultados_apgar.get(resultado)
+
+    if resultado_info:
+        titulo = resultado_info["titulo"]
+        acuerdo = resultado_info["acuerdo"]
+        return f"{titulo}:\n\n{acuerdo}"
+    else:
+        return None
 
 
 
@@ -199,7 +223,7 @@ def generar_tuplas_integrantes(
 
     return resultado
 
-#----------funcion para generar textos de sobrecarga del cuidador
+#----------funcion para generar textos de sobrecarga del cuidador------------------------------
 
 from typing import Dict, Tuple
 from db_restuestas import sobrecarga_cuidador
@@ -230,7 +254,112 @@ def generar_texto_sobrecarga_unico(datos_nucleo: Dict[str, Dict]) -> Tuple[str, 
         info["logro_intermedio"]
     )
 
+#----funcion para generar textos sobre actividades ludicas y deportivas
+
+from typing import Dict, Tuple
+
+def generar_textos_cuidado_entorno(
+    datos_nucleo: Dict[str, Dict],
+    diccionario: Dict[bool, Dict[str, Dict[str, str]]]
+) -> Tuple[str, str, str, str]:
+    """
+    Genera una tupla con los textos de hallazgo, compromiso, logro trazador e intermedio
+    para actividades comunitarias, según el valor True/False de cada actividad.
+
+    Siempre incluye tanto actividades deportivas como lúdicas y culturales, usando los textos
+    correspondientes al valor booleano en 'datos_nucleo["factores"]'.
+    """
+
+    actividades = [
+        "ACTIVIDADES DEPORTIVAS COMUNITARIAS",
+        "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS"
+    ]
+
+    hallazgos = []
+    compromisos = []
+    trazadores = []
+    intermedios = []
+
+    factores = datos_nucleo.get("factores", {})
+
+    for actividad in actividades:
+        valor = factores.get(actividad, False)
+        textos = diccionario[valor].get(actividad, {})
+
+        hallazgos.append(textos.get("hallazgo", ""))
+        compromisos.append(textos.get("compromiso", ""))
+        trazadores.append(textos.get("logro_trazador", ""))
+        intermedios.append(textos.get("logro_intermedio", ""))
+
+    return (
+        "\n\n".join(hallazgos),
+        "\n\n".join(compromisos),
+        "\n\n".join(trazadores),
+        "\n\n".join(intermedios),
+    )
+
+
+#---Funcion para red de apoyo unico-------------------------
+from typing import Dict, Tuple
+from db_restuestas import red_apoyo_comunitario
+
+def generar_texto_red_apoyo_unico(datos_nucleo: Dict[str, Dict]) -> Tuple[str, str, str, str]:
+    """
+    Genera una tupla de textos (hallazgo, compromiso, logro trazador, logro intermedio)
+    basada únicamente en el valor booleano del factor 'RED DE APOYO COMUNITARIO'.
+
+    :param datos_nucleo: Diccionario del núcleo familiar con la clave 'factores' que incluye el factor de red de apoyo.
+    :return: Tupla de textos (hallazgo, compromiso, logro trazador, logro intermedio).
+    """
+    # Extrae el valor booleano del factor
+    factores = datos_nucleo.get("factores", {})
+    valor_red_apoyo = factores.get("RED DE APOYO COMUNITARIO")
+
+    # Usa el diccionario correspondiente
+    info = red_apoyo_comunitario.get(valor_red_apoyo)
+
+    # Si no hay valor válido, retorna textos vacíos
+    if not info:
+        return ("", "", "", "")
+
+    return (
+        info["hallazgo"],
+        info["compromiso"],
+        info["logro_trazador"],
+        info["logro_intermedio"]
+    )
+
+
 #-------------------------test-------------------------------------
+def main():
+    try:
+        datos_nucleo = {
+            'factores': {
+                "RED DE APOYO COMUNITARIO": True,
+                }
+        }
+
+        # Usando el diccionario DICT_CUIDADO_ENTORNO definido antes
+        hallazgo, compromiso, trazador, intermedio = generar_texto_red_apoyo_unico(datos_nucleo)
+
+        print(hallazgo)
+        print(compromiso)
+        print(trazador)
+        print(intermedio)
+
+    
+    except ValueError as e:
+        # Manejo de errores: entrada inválida o datos incompletos
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+'''
 def main():
     
     try:
@@ -252,7 +381,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-
+'''
 
 '''
 def main():

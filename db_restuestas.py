@@ -285,3 +285,159 @@ sobrecarga_cuidador = {
         )
     }
 }
+
+#-------------Diccionario actividades ludicas y deportivas-------------------------
+
+DICT_CUIDADO_ENTORNO = {
+    True: {
+        "ACTIVIDADES DEPORTIVAS COMUNITARIAS": {
+            "hallazgo": (
+                "La familia participa activamente en actividades deportivas organizadas en su comunidad, "
+                "lo que fortalece sus vínculos sociales y promueve estilos de vida saludables."
+            ),
+            "compromiso": (
+                "Fortalecer y mantener la participación de todos los integrantes del núcleo en espacios deportivos comunitarios, "
+                "aprovechando las oportunidades locales de recreación y bienestar físico."
+            ),
+            "logro_trazador": (
+                "Consolidar una rutina semanal de participación familiar en eventos deportivos al aire libre, "
+                "como caminatas, ciclorrutas, torneos o clases grupales de ejercicio."
+            ),
+            "logro_intermedio": (
+                "Lograr que cada miembro de la familia se vincule de manera continua a una actividad física promovida por su comunidad "
+                "durante al menos un mes consecutivo."
+            )
+        },
+        "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS": {
+            "hallazgo": (
+                "La familia demuestra interés y participación en actividades culturales, artísticas y lúdicas de su entorno comunitario, "
+                "reforzando su identidad local y convivencia social."
+            ),
+            "compromiso": (
+                "Estimular espacios familiares para el disfrute y la creación colectiva en escenarios artísticos, recreativos y culturales ofrecidos por la comunidad."
+            ),
+            "logro_trazador": (
+                "Implementar un calendario familiar de asistencia a eventos culturales como ferias, talleres, conciertos o cine comunitario, "
+                "que promueva el aprendizaje y la expresión creativa."
+            ),
+            "logro_intermedio": (
+                "Concretar la participación activa de al menos dos integrantes de la familia en una actividad cultural organizada por la comunidad "
+                "cada quince días durante un trimestre."
+            )
+        }
+    },
+    False: {
+        "ACTIVIDADES DEPORTIVAS COMUNITARIAS": {
+            "hallazgo": (
+                "Actualmente, la familia no participa en actividades deportivas comunitarias, "
+                "lo cual puede limitar sus oportunidades de interacción social y cuidado de la salud física."
+            ),
+            "compromiso": (
+                "Motivar a la familia para explorar espacios deportivos cercanos, identificando barreras de acceso o desinterés que impidan su participación."
+            ),
+            "logro_trazador": (
+                "Desarrollar estrategias comunitarias de inclusión deportiva para la familia, como visitas guiadas a eventos locales, "
+                "alianzas con instructores barriales o acompañamiento inicial en actividades físicas."
+            ),
+            "logro_intermedio": (
+                "Realizar un mapeo participativo de intereses y horarios disponibles de la familia para facilitar su vinculación progresiva "
+                "con espacios de actividad física colectiva."
+            )
+        },
+        "ACTIVIDADES LÚDICAS Y CULTURALES COMUNITARIAS": {
+            "hallazgo": (
+                "Se evidencia una baja participación familiar en espacios lúdicos y culturales de la comunidad, "
+                "lo que reduce oportunidades de interacción positiva y desarrollo emocional compartido."
+            ),
+            "compromiso": (
+                "Promover el acercamiento gradual de la familia a escenarios culturales mediante actividades accesibles, pertinentes y divertidas."
+            ),
+            "logro_trazador": (
+                "Diseñar con la familia un plan de integración cultural que contemple experiencias sencillas como juegos tradicionales, "
+                "visitas a bibliotecas, ferias o encuentros comunitarios de narración oral."
+            ),
+            "logro_intermedio": (
+                "Facilitar la participación de la familia en al menos una actividad cultural comunitaria mensual durante tres meses consecutivos, "
+                "con seguimiento y retroalimentación."
+            )
+        }
+    }
+}
+
+#---------Diccionario para red de apoyo comunitario------------
+
+red_apoyo_comunitario = {
+    True: {
+        "hallazgo": "NO CUENTA CON RED DE APOYO COMUNITARIO",
+        "compromiso": (
+            "Motivar la construcción de vínculos comunitarios significativos mediante la identificación de líderes vecinales, "
+            "grupos de interés o espacios comunitarios que favorezcan la integración progresiva de la familia."
+        ),
+        "logro_trazador": (
+            "Diseñar una estrategia participativa para fortalecer el sentido de comunidad y corresponsabilidad social, "
+            "incluyendo actividades de integración o brigadas de apoyo vecinal en el entorno cercano."
+        ),
+        "logro_intermedio": (
+            "Realizar un mapeo de actores comunitarios disponibles y establecer al menos una conexión inicial que facilite el "
+            "acompañamiento externo en situaciones de necesidad o vulnerabilidad."
+        )
+    },
+    False: {
+        "hallazgo": "SI CUENTA CON RED DE APOYO COMUNITARIO",
+        "compromiso": (
+            "Reforzar la participación activa de la familia dentro de los espacios comunitarios existentes, promoviendo relaciones de colaboración "
+            "y ayuda mutua frente a retos compartidos."
+        ),
+        "logro_trazador": (
+            "Consolidar mecanismos de cooperación entre la familia y su red comunitaria, como comités vecinales, grupos de madres, "
+            "juntas de acción comunal u otras formas de organización barrial."
+        ),
+        "logro_intermedio": (
+            "Coordinar una actividad comunitaria en la que la familia tenga un rol participativo o de liderazgo, favoreciendo el fortalecimiento "
+            "del tejido social y el sentido de pertenencia."
+        )
+    }
+}
+
+#------------Diccionario para analisis segun apgar---------------------
+
+resultados_apgar: Dict[str, Dict[str, str]] = {
+    "17 A 20": {
+        "titulo": "Funcionalidad familiar adecuada",
+        "acuerdo": (
+            "La familia evaluada presenta una funcionalidad adecuada, con relaciones positivas y mecanismos de afrontamiento "
+            "efectivos ante situaciones cotidianas. Se observa cohesión, afecto, y una adecuada comunicación entre los miembros. "
+            "Se considera que no hay signos de disfunción familiar. Sin embargo, se recomienda continuar fortaleciendo los lazos "
+            "familiares mediante actividades que promuevan el tiempo compartido, la escucha activa y la resolución asertiva de conflictos."
+        )
+    },
+    "16 A 13": {
+        "titulo": "Disfunción leve: prevención y fortalecimiento",
+        "acuerdo": (
+            "La familia presenta indicadores de leve disfunción, posiblemente relacionados con dificultades puntuales en áreas como la "
+            "toma de decisiones, la comunicación o el apoyo emocional. Aunque se mantienen ciertas dinámicas funcionales, es importante "
+            "intervenir con orientación psicoeducativa para evitar un deterioro progresivo. Se recomienda reforzar habilidades de comunicación, "
+            "fortalecer redes de apoyo y promover espacios para el diálogo y la expresión emocional."
+        )
+    },
+    "12 A 10": {
+        "titulo": "Disfunción moderada: intervención estructurada",
+        "acuerdo": (
+            "Se identifica una disfunción moderada en la dinámica familiar, reflejada en una percepción de bajo apoyo, escasa adaptabilidad "
+            "y dificultades en la cohesión del grupo familiar. Estas condiciones pueden afectar el bienestar emocional de sus miembros. "
+            "Se sugiere una intervención psicológica estructurada, que incluya sesiones de orientación familiar, promoción de la escucha activa, "
+            "solución de conflictos y establecimiento de normas claras y consensuadas."
+        )
+    },
+    "9 O MENOS": {
+        "titulo": "Disfunción severa: intervención inmediata",
+        "acuerdo": (
+            "El resultado obtenido indica una disfunción familiar severa, que puede estar afectando significativamente el bienestar emocional, "
+            "la comunicación y el sentido de pertenencia de los miembros. Es posible que existan conflictos graves no resueltos, aislamiento emocional "
+            "o fallas en el apoyo mutuo. Se recomienda una intervención inmediata desde el área psicosocial, que incluya seguimiento psicológico individual "
+            "y familiar, fortalecimiento de factores protectores y remisión a otras instancias de apoyo si es necesario."
+        )
+    }
+}
+
+
